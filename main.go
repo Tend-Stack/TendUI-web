@@ -1,4 +1,4 @@
-// GothUI-Web serves the coming-soon website from a single binary.
+// GothUI-Web serves documentation and runnable examples from one Go binary.
 package main
 
 import (
@@ -6,6 +6,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"embed"
+	"encoding/json"
 	"errors"
 	"flag"
 	"fmt"
@@ -17,9 +18,11 @@ import (
 	"strconv"
 	"syscall"
 	"time"
+
+	"github.com/Tend-Stack/GothUI/v2026/examples/site"
 )
 
-//go:embed static/*
+//go:embed static/* content/* library-version.json
 var assets embed.FS
 
 var version = "2026.1.0-dev"
@@ -66,6 +69,25 @@ func main() {
 
 func handler() http.Handler {
 	mux := http.NewServeMux()
+	demos := site.Handler()
+	registerDocs(mux)
+	provenance, err := assets.ReadFile("library-version.json")
+	if err != nil {
+		panic(err)
+	}
+	mux.HandleFunc("/version", func(w http.ResponseWriter, r *http.Request) {
+		if !readMethod(w, r) {
+			return
+		}
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.Header().Set("Cache-Control", "no-store")
+		if r.Method != http.MethodHead {
+			_ = json.NewEncoder(w).Encode(struct {
+				Build   string          `json:"build"`
+				Library json.RawMessage `json:"library"`
+			}{version, provenance})
+		}
+	})
 	for _, asset := range []struct{ route, file, contentType string }{
 		{"/", "index.html", "text/html; charset=utf-8"},
 		{"/site.css", "site.css", "text/css; charset=utf-8"},
@@ -79,7 +101,7 @@ func handler() http.Handler {
 		etag := fmt.Sprintf(`"%x"`, sha256.Sum256(data))
 		mux.HandleFunc(asset.route, func(w http.ResponseWriter, r *http.Request) {
 			if r.URL.Path != asset.route {
-				http.NotFound(w, r)
+				demos.ServeHTTP(w, r)
 				return
 			}
 			if !readMethod(w, r) {
@@ -102,10 +124,11 @@ func handler() http.Handler {
 		}
 	})
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Security-Policy", "default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'")
+		w.Header().Set("Content-Security-Policy", "default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'")
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("Referrer-Policy", "strict-origin-when-cross-origin")
 		w.Header().Set("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
+		w.Header().Set("X-GothUI-Build", version)
 		mux.ServeHTTP(w, r)
 	})
 }

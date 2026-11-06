@@ -1,0 +1,13 @@
+# github.com/Tend-Stack/GothUI/v2026 v2026.0.0-20261106112355-ee332c530f2a
+## explicit; go 1.26.0
+github.com/Tend-Stack/GothUI/v2026
+github.com/Tend-Stack/GothUI/v2026/components
+github.com/Tend-Stack/GothUI/v2026/examples/site
+github.com/Tend-Stack/GothUI/v2026/internal/recipes
+github.com/Tend-Stack/GothUI/v2026/render
+# github.com/a-h/templ v0.3.1100
+## explicit; go 1.26.0
+github.com/a-h/templ
+github.com/a-h/templ/internal/htmlattr
+github.com/a-h/templ/runtime
+github.com/a-h/templ/safehtml

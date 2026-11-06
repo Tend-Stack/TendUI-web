@@ -1,0 +1,43 @@
+name: Website browser verification
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: website-browser-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e
+        with:
+          go-version: '1.27.3'
+          cache: false
+      - name: Build website without network module downloads
+        run: GOPROXY=off go build -mod=vendor -o tests/results/browser/site .
+      - name: Install development-only browser tooling
+        working-directory: tests/browser
+        run: npm ci --ignore-scripts
+      - name: Install browser engines
+        working-directory: tests/browser
+        run: npx playwright install --with-deps chromium webkit
+      - name: Check desktop and mobile website
+        working-directory: tests/browser
+        run: npm test
+      - name: Retain bounded browser evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: website-browser-evidence
+          path: |
+            tests/results/browser/results.json
+            tests/results/browser/artifacts
+          retention-days: 7

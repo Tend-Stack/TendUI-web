@@ -1,0 +1,66 @@
+package main
+
+import (
+	"bytes"
+	"html/template"
+	"log"
+	"net/http"
+)
+
+type guide struct {
+	Path, Title, Summary, File string
+}
+
+var guides = []guide{
+	{"/docs", "Build something thoughtful.", "A practical guide to semantic interfaces with Go, templ, and optional HTMX.", "overview"},
+	{"/docs/install", "From module to interface.", "Install GothUI, serve its embedded CSS, and render your first page.", "install"},
+	{"/docs/theming", "Make it feel like yours.", "Choose a color mode, compose appearance settings, or override the tokens.", "theming"},
+	{"/docs/forms", "Forms that work with the browser.", "Native submission first. Validation and persistence belong to your application.", "forms"},
+	{"/docs/htmx", "Enhance a working page.", "Use optional HTMX attributes with explicit full-page and fragment responses.", "htmx"},
+	{"/docs/accessibility", "Good structure comes first.", "Names, focus, landmarks, feedback, and motion need deliberate care.", "accessibility"},
+	{"/docs/deploy", "Ship a single binary.", "Embed the assets, build with Go, and let your platform handle routing and TLS.", "deploy"},
+	{"/examples", "See the pieces work together.", "Runnable examples with native controls and application-owned Go handlers.", "examples"},
+}
+
+func registerDocs(mux *http.ServeMux) {
+	for _, g := range guides {
+		page := template.Must(template.ParseFS(assets, "content/shell.html", "content/"+g.File+".html"))
+		mux.HandleFunc(g.Path, func(w http.ResponseWriter, r *http.Request) {
+			if !readMethod(w, r) {
+				return
+			}
+			var buf bytes.Buffer
+			if err := page.ExecuteTemplate(&buf, "shell", struct {
+				Guide   guide
+				Guides  []guide
+				Version string
+			}{g, guides, version}); err != nil {
+				log.Printf("documentation render: %v", err)
+				http.Error(w, "Unable to render page", http.StatusInternalServerError)
+				return
+			}
+			w.Header().Set("Content-Type", "text/html; charset=utf-8")
+			w.Header().Set("Cache-Control", "public, max-age=0, must-revalidate")
+			if r.Method != http.MethodHead {
+				_, _ = w.Write(buf.Bytes())
+			}
+		})
+	}
+	mux.HandleFunc("/sitemap.xml", func(w http.ResponseWriter, r *http.Request) {
+		if !readMethod(w, r) {
+			return
+		}
+		w.Header().Set("Content-Type", "application/xml; charset=utf-8")
+		if r.Method == http.MethodHead {
+			return
+		}
+		_, _ = w.Write([]byte(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://gothui.com/</loc></url>`))
+		for _, g := range guides {
+			_, _ = w.Write([]byte("<url><loc>https://gothui.com" + g.Path + "</loc></url>"))
+		}
+		for _, path := range []string{"/catalog", "/playground", "/forms", "/dashboard", "/settings", "/workspace", "/interactions", "/editing", "/motion", "/patterns", "/wizard", "/uploads"} {
+			_, _ = w.Write([]byte("<url><loc>https://gothui.com" + path + "</loc></url>"))
+		}
+		_, _ = w.Write([]byte("</urlset>"))
+	})
+}

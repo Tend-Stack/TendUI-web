@@ -12,7 +12,7 @@ func TestPublicRoutes(t *testing.T) {
 	for _, tc := range []struct {
 		path, contentType, contains string
 	}{
-		{"/", "text/html", "Website coming soon"},
+		{"/", "text/html", "Start building"},
 		{"/site.css", "text/css", "prefers-reduced-motion"},
 		{"/favicon.svg", "image/svg+xml", "<svg"},
 		{"/robots.txt", "text/plain", "Allow: /"},

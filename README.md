@@ -1,11 +1,24 @@
 # GothUI Web
 
-The coming-soon website for [GothUI](https://github.com/Tend-Stack/GothUI):
+The documentation and examples website for [GothUI](https://github.com/Tend-Stack/GothUI):
 semantic CSS and typed templ components, embedded in your Go binary.
 
-This standalone website uses original HTML/CSS and a standard-library Go server.
-All assets are embedded. No Node, npm, JavaScript, external fonts, tracking,
-database, or runtime downloads. The interface study uses a native disclosure.
+This website uses original HTML/CSS, Go documentation templates, and GothUI's
+shared catalog/example handler. All assets are embedded. No Node, npm, JavaScript,
+external fonts, tracking, database, or runtime downloads are required to build or
+serve it. The test-only browser suite is separate from the shipped application.
+
+Documentation lives under `/docs`, the searchable 36-component reference under
+`/catalog`, application examples under `/examples`, and native state/appearance
+controls under `/playground`. The public canonical origin is https://gothui.com.
+
+The library and templ runtime are vendored at the exact revision recorded in
+`library-version.json`. Docker builds use `GOPROXY=off` and need no private-repo
+credentials. To refresh from a clean library checkout, run
+`python3 tools/vendor-library.py /path/to/GothUI`. This uses the local Go module
+cache for already-downloaded dependencies, records a tag or exact pseudo-version,
+and removes its temporary proxy and cache. Commit the resulting module metadata,
+manifest, and vendor directory together. No local `replace` ships in the repo.
 
 ## Run
 
@@ -49,11 +62,14 @@ Release/development builds should pass `git describe --tags --long --dirty` as
 
 GitHub Actions tests the HTTP contract, runs vet, and builds the Dockerfile.
 Tend may deploy independently of CI; check both statuses after publication.
-Add domain-specific canonical and social URLs when the final domain is assigned.
+The documentation and homepage include canonical metadata for gothui.com;
+`/sitemap.xml` lists the primary documentation and example routes.
 
 ## Scope
 
-This is a coming-soon page, not the future docs or component playground.
+The site includes the guides, component catalog, live previews, downloads,
+examples, and playground. Sample mutations update bounded browser cookies and
+do not create real accounts or projects.
 Links point to the project repositories; access follows their GitHub visibility.
 There is no mailing-list form or unimplemented sign-up action.
 

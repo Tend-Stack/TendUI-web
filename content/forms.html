@@ -1,0 +1,19 @@
+{{define "body"}}
+<h2>Keep the native contract</h2><p>Use <code>Form</code> with a real action and method. Give each submitted control a name, each input an accessible label, and each action an explicit button type. Browser validation improves feedback; always validate again on the server.</p>
+<pre><code>@components.Form(components.FormProps{
+    Action: "/projects", Method: components.MethodPost,
+}) {
+    @components.Input(components.InputProps{
+        Name: "name", Label: "Project name", Required: true,
+    })
+    @components.Button(components.ButtonProps{
+        Text: "Create project", Type: components.ButtonTypeSubmit,
+        Primary: true,
+    })
+}</code></pre>
+<h2>Make errors actionable</h2><p>Preserve safe submitted values. Mark invalid controls and associate help and error text using <code>aria-describedby</code>. An <code>ErrorSummary</code> should link to the relevant field IDs. Keep error wording specific enough to help someone recover.</p>
+<p>The <a href="/forms">form lab</a> includes native constraints and server validation. The <a href="/wizard">multi-step example</a> revalidates all values at the final step rather than trusting earlier screens.</p>
+<h2>Bound requests and uploads</h2><p>Set request body limits before parsing. <code>FileInput</code> and multipart forms provide browser controls and encoding; they do not authorize, validate, or persist uploaded files. The <a href="/uploads">CSV example</a> previews a bounded file without saving it.</p>
+<h2>Own request protection</h2><p>Authentication, authorization, CSRF defenses, cookie security, and idempotency belong to the application. These demos use same-origin checks and bounded requests. Their sample cookie state is not an authentication or persistence design.</p>
+<h2>Enhance progressively</h2><p>Provide working native routes before adding <code>HxPost</code>, <code>HxTarget</code>, or other optional attributes. See the <a href="/docs/htmx">HTMX guide</a> for full-page and fragment response handling.</p>
+{{end}}

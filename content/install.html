@@ -1,0 +1,54 @@
+{{define "body"}}
+<h2>1. Add the module</h2>
+<p>Use Go 1.26 or newer. Choose a patched compiler for deployed applications. The first release is being validated; until its tag is published, use the main branch:</p>
+<pre><code>go mod init example.com/myapp
+go get github.com/Tend-Stack/GothUI/v2026@main
+go install github.com/a-h/templ/cmd/templ@v0.3.1100</code></pre>
+<p>The repository currently requires GitHub access. For private-module downloads, configure your normal Git credentials and <code>GOPRIVATE=github.com/Tend-Stack/GothUI</code>. Never put credentials in source or import URLs.</p>
+<h2>2. Create a page</h2><p>Save this as <code>page.templ</code>. Go structs configure the component; ordinary HTML supplies the content.</p>
+<pre><code>package main
+
+import "github.com/Tend-Stack/GothUI/v2026/components"
+
+templ page() {
+    @components.Layout(components.LayoutProps{
+        Title: "My GothUI app",
+        Language: "en",
+        Theme: components.ThemeSystem,
+    }, body())
+}
+
+templ body() {
+    &lt;main&gt;
+        &lt;h1&gt;Hello, GothUI.&lt;/h1&gt;
+        @components.Card(components.CardProps{}) {
+            &lt;p&gt;A little less setup. A little more making.&lt;/p&gt;
+        }
+    &lt;/main&gt;
+}</code></pre>
+<h2>3. Serve the page and stylesheet</h2><p>Save this as <code>main.go</code>. The layout links the same stylesheet path served by <code>AssetHandler</code>.</p>
+<pre><code>package main
+
+import (
+    "log"
+    "net/http"
+    "time"
+
+    "github.com/Tend-Stack/GothUI/v2026"
+    "github.com/a-h/templ"
+)
+
+func main() {
+    mux := http.NewServeMux()
+    mux.Handle(gothui.AssetPath, gothui.AssetHandler())
+    mux.Handle("GET /{$}", templ.Handler(page()))
+    server := &amp;http.Server{
+        Addr: ":8080", Handler: mux,
+        ReadHeaderTimeout: 5 * time.Second,
+    }
+    log.Fatal(server.ListenAndServe())
+}</code></pre>
+<h2>4. Generate and run</h2><pre><code>templ generate
+go run .</code></pre><p>Open <code>http://localhost:8080</code>. To ship the app, run <code>go build</code>. Your generated Go and embedded CSS become one executable.</p>
+<h2>Versioning</h2><p>Releases use <code>YEAR.RELEASE.FIX</code>, starting with <code>v2026.1.0</code>. The module suffix <code>/v2026</code> follows Go’s major-version rules. Fixes on this line retain the suffix.</p>
+{{end}}

@@ -1,0 +1,20 @@
+{{define "body"}}
+<h2>Optional means application-owned</h2><p>GothUI emits HTMX attributes but does not bundle HTMX or any other JavaScript. This website’s public demos work with native HTML. In an enhanced app, load your own pinned, locally served HTMX runtime and use an appropriate Content Security Policy.</p>
+<pre><code>components.ButtonProps{
+    Text: "Load details",
+    Type: components.ButtonTypeButton,
+    HxGet: "/details",
+    HxTarget: "#details",
+    HxSwap: "innerHTML",
+}</code></pre>
+<p>A button that only loads a fragment still needs an equivalent ordinary-page link or form for users without scripts. The <a href="/editing">inline editing example</a> uses native form actions alongside HTMX attributes.</p>
+<h2>Respond with the right representation</h2><p>Use <code>render.HTML</code> with the complete document and optional fragment. It selects the fragment for supported HTMX requests and emits the appropriate <code>Vary</code> headers. History restoration must receive a complete page.</p>
+<pre><code>err := render.HTML(w, r, http.StatusOK, fullPage, fragment)
+if err != nil {
+    log.Printf("render: %v", err)
+}</code></pre>
+<h2>Handle validation statuses</h2><p>HTMX does not swap every error response by default. If your application returns validation fragments with status 422, configure response handling deliberately; do not assume emitting attributes alone makes errors appear. Keep the native full-page response functional.</p>
+<h2>Changing the document theme</h2><p><code>ThemeToggle</code> submits a native POST. The example handler saves its theme cookie and redirects to a cleaned local URL. For an enhanced request it uses <code>HX-Redirect</code> on a successful non-3xx response, so the browser performs a real navigation with the new root theme and head.</p>
+<p>It does not attempt an <code>outerHTML</code> replacement of the root HTML element. URLs and headers are untrusted inputs: validate the same-origin destination before using them.</p>
+<h2>Reference</h2><p>Consult the <a href="https://htmx.org/docs/">official HTMX documentation</a> for runtime configuration, CSP, response handling, and history behavior. The library’s browser suite tests a separate consumer fixture; it does not add that runtime to the shipped website.</p>
+{{end}}
