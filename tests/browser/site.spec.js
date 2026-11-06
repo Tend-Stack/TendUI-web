@@ -18,9 +18,9 @@ test('guides, examples, and homepage remain accessible and contained', async ({ 
     expect.soft(audit.violations.map(v => ({ id: v.id, nodes: v.nodes.map(n => ({ target: n.target, summary: n.failureSummary })) })), route).toEqual([]);
   }
   await page.goto('/');
-  await page.screenshot({ path: testInfo.outputPath('homepage.png'), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath('homepage.png'), fullPage: true, animations: 'disabled' });
   await page.goto('/docs/install');
-  await page.screenshot({ path: testInfo.outputPath('installation.png'), fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath('installation.png'), fullPage: true, animations: 'disabled' });
 });
 
 test('landing page leads to documentation and the real catalog', async ({ page }) => {

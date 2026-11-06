@@ -1,8 +1,8 @@
 {{define "body"}}
 <h2>1. Add the module</h2>
-<p>Use Go 1.26 or newer. Choose a patched compiler for deployed applications. The first release is being validated; until its tag is published, use the main branch:</p>
+<p>Use Go 1.26 or newer. Choose a patched compiler for deployed applications. Install the first stable release:</p>
 <pre tabindex="0" aria-label="Install dependencies"><code>go mod init example.com/myapp
-go get github.com/Tend-Stack/GothUI/v2026@main
+go get github.com/Tend-Stack/GothUI/v2026@v2026.1.0
 go install github.com/a-h/templ/cmd/templ@v0.3.1100</code></pre>
 <p>The repository currently requires GitHub access. For private-module downloads, configure your normal Git credentials and <code>GOPRIVATE=github.com/Tend-Stack/GothUI</code>. Never put credentials in source or import URLs.</p>
 <h2>2. Create a page</h2><p>Save this as <code>page.templ</code>. Go structs configure the component; ordinary HTML supplies the content.</p>

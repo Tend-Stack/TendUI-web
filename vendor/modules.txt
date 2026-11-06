@@ -1,4 +1,4 @@
-# github.com/Tend-Stack/GothUI/v2026 v2026.0.0-20261106114032-2f622c95fbf7
+# github.com/Tend-Stack/GothUI/v2026 v2026.1.0
 ## explicit; go 1.26.0
 github.com/Tend-Stack/GothUI/v2026
 github.com/Tend-Stack/GothUI/v2026/components
