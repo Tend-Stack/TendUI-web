@@ -282,7 +282,7 @@ func documentationSidebarFooter() templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "\" alt=\"\" width=\"88\" height=\"88\" loading=\"lazy\"><p>Go-native. HTML-first.<br>Yours to compose.</p><small>Built with TendUI · development</small><p><a href=\"https://github.com/Tend-Stack/TendUI-web\">Website source ↗</a></p>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "\" alt=\"\" width=\"88\" height=\"88\" loading=\"lazy\"><p>Go-native. HTML-first.<br>Yours to compose.</p><small>Built with TendUI · development</small><p><a href=\"https://github.com/Tend-Stack/TendUI\">TendUI source ↗</a></p>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
