@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 	"net/http/httptest"
+	"regexp"
 	"strings"
 	"testing"
 )
@@ -132,5 +133,43 @@ func TestThemeBehindPublicTLSProxy(t *testing.T) {
 	h.ServeHTTP(w, r)
 	if w.Code != http.StatusForbidden || len(w.Result().Cookies()) != 0 {
 		t.Fatal("proxy bypassed cross-origin protection")
+	}
+}
+
+func TestPagesUseVersionedStylesheets(t *testing.T) {
+	h := handler()
+	pattern := regexp.MustCompile(`rel="stylesheet" href="([^"]+)"`)
+	versioned := regexp.MustCompile(`^/assets/(site|docs|gothui)-[a-f0-9]{64}\.css$`)
+	for _, path := range []string{"/", "/docs", "/docs/install"} {
+		page := httptest.NewRecorder()
+		h.ServeHTTP(page, httptest.NewRequest("GET", path, nil))
+		styles := pattern.FindAllStringSubmatch(page.Body.String(), -1)
+		expected := 2
+		if path == "/" {
+			expected = 1
+		}
+		if len(styles) != expected {
+			t.Fatalf("%s: expected %d stylesheets, got %d", path, expected, len(styles))
+		}
+		for _, style := range styles {
+			if !versioned.MatchString(style[1]) {
+				t.Fatalf("stale-cache-prone stylesheet URL: %s", style[1])
+			}
+			asset := httptest.NewRecorder()
+			h.ServeHTTP(asset, httptest.NewRequest("GET", style[1], nil))
+			if asset.Code != 200 || !strings.HasPrefix(asset.Header().Get("Content-Type"), "text/css") || asset.Body.Len() == 0 {
+				t.Fatalf("unusable stylesheet %s: %d", style[1], asset.Code)
+			}
+			req := httptest.NewRequest("GET", style[1], nil)
+			req.Header.Set("If-None-Match", asset.Header().Get("ETag"))
+			cached := httptest.NewRecorder()
+			h.ServeHTTP(cached, req)
+			if cached.Code != 304 {
+				t.Fatalf("%s: conditional fetch failed", style[1])
+			}
+		}
+		if path != "/" && (!strings.Contains(page.Body.String(), `class="app-shell"`) || !strings.Contains(page.Body.String(), `class="prose"`)) {
+			t.Fatal("documentation no longer composes GothUI shell and prose")
+		}
 	}
 }

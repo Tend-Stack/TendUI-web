@@ -2,7 +2,7 @@ FROM golang:1.27.3-alpine AS build
 WORKDIR /src
 COPY go.mod go.sum ./
 COPY vendor ./vendor
-COPY main.go docs.go ./
+COPY main.go docs.go docs_templ.go assets.go ./
 COPY static ./static
 COPY content ./content
 COPY library-version.json ./

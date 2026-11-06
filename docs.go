@@ -2,9 +2,14 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"html/template"
+	"io"
 	"log"
 	"net/http"
+
+	"github.com/Tend-Stack/GothUI/v2026/components"
+	"github.com/a-h/templ"
 )
 
 type guide struct {
@@ -24,17 +29,22 @@ var guides = []guide{
 
 func registerDocs(mux *http.ServeMux) {
 	for _, g := range guides {
-		page := template.Must(template.ParseFS(assets, "content/shell.html", "content/"+g.File+".html"))
+		page := template.Must(template.ParseFS(assets, "content/"+g.File+".html"))
 		mux.HandleFunc(g.Path, func(w http.ResponseWriter, r *http.Request) {
 			if !readMethod(w, r) {
 				return
 			}
 			var buf bytes.Buffer
-			if err := page.ExecuteTemplate(&buf, "shell", struct {
-				Guide   guide
-				Guides  []guide
-				Version string
-			}{g, guides, version}); err != nil {
+			navigation := make([]components.NavItem, 0, len(guides)+1)
+			labels := []string{"Introduction", "Installation", "Appearance", "Forms & validation", "HTMX", "Accessibility", "Deployment", "Examples"}
+			for i, entry := range guides {
+				navigation = append(navigation, components.NavItem{Label: labels[i], Href: entry.Path, Current: entry.Path == g.Path})
+			}
+			navigation = append(navigation, components.NavItem{Label: "Component reference ↗", Href: "/catalog"})
+			body := templ.ComponentFunc(func(ctx context.Context, w io.Writer) error {
+				return page.ExecuteTemplate(w, "body", nil)
+			})
+			if err := documentationPage(g, navigation, body).Render(r.Context(), &buf); err != nil {
 				log.Printf("documentation render: %v", err)
 				http.Error(w, "Unable to render page", http.StatusInternalServerError)
 				return

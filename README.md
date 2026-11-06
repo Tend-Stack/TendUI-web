@@ -3,8 +3,10 @@
 The documentation and examples website for [GothUI](https://github.com/Tend-Stack/GothUI):
 semantic CSS and typed templ components, embedded in your Go binary.
 
-This website uses original HTML/CSS, Go documentation templates, and GothUI's
-shared catalog/example handler. All assets are embedded. No Node, npm, JavaScript,
+The documentation composes GothUI’s typed `AppShell` and `Prose` components
+with its embedded semantic stylesheet. Guide content uses Go HTML templates;
+the landing page retains its own branding. Catalogs and demos share GothUI’s
+example handler. All assets are embedded. No Node, npm, JavaScript,
 external fonts, tracking, database, or runtime downloads are required to build or
 serve it. The test-only browser suite is separate from the shipped application.
 
@@ -85,3 +87,10 @@ HTTP to the container. The website adapts validated presentation URLs for the
 shared demo handler and marks its cookies Secure. It preserves Origin-based
 request protection and does not trust arbitrary forwarded headers. Localhost
 HTTP development keeps its original behavior.
+
+Documentation shell source is `docs.templ`; generated `docs_templ.go` is committed.
+After editing the shell, use templ v0.3.1100 to run `templ generate -f docs.templ`.
+Normal builds need only Go. Website styles use content-hashed URLs; the library
+stylesheet URL is tied to the vendored revision. This prevents cached landing-page
+CSS from being reused after a documentation deployment, even when an edge proxy
+sets a longer browser cache lifetime.

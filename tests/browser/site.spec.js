@@ -19,6 +19,8 @@ test('guides, examples, and homepage remain accessible and contained', async ({ 
   }
   await page.goto('/');
   await page.screenshot({ path: testInfo.outputPath('homepage.png'), fullPage: true, animations: 'disabled' });
+  await page.goto('/docs');
+  await page.screenshot({ path: testInfo.outputPath('documentation.png'), fullPage: true, animations: 'disabled' });
   await page.goto('/docs/install');
   await page.screenshot({ path: testInfo.outputPath('installation.png'), fullPage: true, animations: 'disabled' });
 });
@@ -59,4 +61,32 @@ test('1920px maximum, keyboard skip, and reduced motion', async ({ page }, testI
   await expect(page).toHaveURL(/#main$/);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   expect(await page.locator('.hero-copy').evaluate(e => getComputedStyle(e).animationName)).toBe('none');
+});
+
+
+test('documentation uses GothUI with spaced navigation and responsive columns', async ({ page }, testInfo) => {
+  // A cached copy of the old stable URL must not affect updated documentation.
+  await page.route('**/site.css', route => route.fulfill({ contentType: 'text/css', body: 'body { background: red; }' }));
+  await page.goto('/docs');
+  await expect(page.locator('.app-shell')).toHaveCount(1);
+  await expect(page.locator('main > .prose')).toHaveCount(1);
+  const styles = await page.locator('link[rel="stylesheet"]').evaluateAll(nodes => nodes.map(n => n.getAttribute('href')));
+  expect(styles).toHaveLength(2);
+  for (const href of styles) expect(href).toMatch(/^\/assets\/(gothui|docs)-[a-f0-9]{64}\.css$/);
+  expect(await page.locator('.app-shell').evaluate(e => getComputedStyle(e).display)).toBe('grid');
+  const nav = page.getByRole('navigation', { name: 'Primary', exact: true });
+  expect(await nav.evaluate(e => parseFloat(getComputedStyle(e).columnGap))).toBeGreaterThanOrEqual(16);
+  expect(await page.locator('h1').evaluate(e => parseFloat(getComputedStyle(e).fontSize))).toBeLessThanOrEqual(70);
+  const sidebar = await page.locator('.app-sidebar').boundingBox();
+  const main = await page.locator('main').boundingBox();
+  if (testInfo.project.name === 'desktop') {
+    expect(sidebar.x + sidebar.width).toBeLessThanOrEqual(main.x + 1);
+    expect(Math.abs(sidebar.y - main.y)).toBeLessThanOrEqual(1);
+    await page.setViewportSize({ width: 2560, height: 1440 });
+    expect((await page.locator('.app-shell').boundingBox()).width).toBe(1920);
+  } else {
+    expect(main.y).toBeGreaterThanOrEqual(sidebar.y + sidebar.height - 1);
+    await page.getByText('Navigation', { exact: true }).click();
+    await expect(page.getByRole('navigation', { name: 'Application', exact: true })).toBeHidden();
+  }
 });

@@ -21,6 +21,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/Tend-Stack/GothUI/v2026"
 	"github.com/Tend-Stack/GothUI/v2026/examples/site"
 )
 
@@ -73,6 +74,12 @@ func handler() http.Handler {
 	mux := http.NewServeMux()
 	demos := site.Handler()
 	registerDocs(mux)
+	libraryAssets := gothui.AssetHandler()
+	mux.HandleFunc(libraryStylesheetURL, func(w http.ResponseWriter, r *http.Request) {
+		clone := r.Clone(r.Context())
+		clone.URL.Path = gothui.StylesheetURL
+		libraryAssets.ServeHTTP(w, clone)
+	})
 	provenance, err := assets.ReadFile("library-version.json")
 	if err != nil {
 		panic(err)
@@ -93,12 +100,17 @@ func handler() http.Handler {
 	for _, asset := range []struct{ route, file, contentType string }{
 		{"/", "index.html", "text/html; charset=utf-8"},
 		{"/site.css", "site.css", "text/css; charset=utf-8"},
+		{siteStylesheetURL, "site.css", "text/css; charset=utf-8"},
+		{docsStylesheetURL, "docs.css", "text/css; charset=utf-8"},
 		{"/favicon.svg", "favicon.svg", "image/svg+xml"},
 		{"/robots.txt", "robots.txt", "text/plain; charset=utf-8"},
 	} {
 		data, err := assets.ReadFile("static/" + asset.file)
 		if err != nil {
 			panic(err)
+		}
+		if asset.file == "index.html" {
+			data = bytes.ReplaceAll(data, []byte(`href="/site.css"`), []byte(`href="`+siteStylesheetURL+`"`))
 		}
 		etag := fmt.Sprintf(`"%x"`, sha256.Sum256(data))
 		mux.HandleFunc(asset.route, func(w http.ResponseWriter, r *http.Request) {

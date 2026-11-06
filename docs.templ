@@ -1,0 +1,52 @@
+package main
+
+import "github.com/Tend-Stack/GothUI/v2026/components"
+
+templ documentationPage(g guide, navigation []components.NavItem, body templ.Component) {
+    <!DOCTYPE html>
+    <html lang="en" data-theme="dark">
+        <head>
+            <meta charset="utf-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <title>{ g.Title } · GothUI</title>
+            <meta name="description" content={ g.Summary }/>
+            <link rel="canonical" href={ templ.SafeURL("https://gothui.com" + g.Path) }/>
+            <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+            <link rel="stylesheet" href={ templ.SafeURL(libraryStylesheetURL) }/>
+            <link rel="stylesheet" href={ templ.SafeURL(docsStylesheetURL) }/>
+        </head>
+        <body>
+            @components.AppShell(components.AppShellProps{
+                Brand: "GothUI", BrandHref: "/", Navigation: navigation,
+                Actions: documentationNavigation(), Footer: documentationSidebarFooter(),
+            }) {
+                @components.Prose(components.ProseProps{Measure: components.MeasureWide}) {
+                    <p class="eyebrow">GOTHUI / DOCUMENTATION</p>
+                    <h1>{ g.Title }</h1>
+                    <p class="doc-lead">{ g.Summary }</p>
+                    @body
+                    <footer class="doc-next" data-prose="off">
+                        <a href="/catalog">Explore the components →</a>
+                        <a href="/playground">Try the playground →</a>
+                    </footer>
+                }
+            }
+        </body>
+    </html>
+}
+
+templ documentationNavigation() {
+    <nav aria-label="Primary">
+        <a href="/docs">Docs</a>
+        <a href="/catalog">Components</a>
+        <a href="/examples">Examples</a>
+        <a href="/playground">Playground</a>
+        <a class="source-link" href="https://github.com/Tend-Stack/GothUI">Source ↗</a>
+    </nav>
+}
+
+templ documentationSidebarFooter() {
+    <p>Go-native. HTML-first.<br/>Yours to compose.</p>
+    <small>Built with GothUI 2026.1.0</small>
+    <p><a href="https://github.com/Tend-Stack/GothUI-Web">Website source ↗</a></p>
+}
