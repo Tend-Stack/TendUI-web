@@ -16,6 +16,7 @@ import (
 	"os"
 	"os/signal"
 	"strconv"
+	"strings"
 	"syscall"
 	"time"
 
@@ -129,7 +130,9 @@ func handler() http.Handler {
 		w.Header().Set("Referrer-Policy", "strict-origin-when-cross-origin")
 		w.Header().Set("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
 		w.Header().Set("X-GothUI-Build", version)
-		mux.ServeHTTP(w, r)
+		origin := &originResponse{ResponseWriter: w}
+		mux.ServeHTTP(origin, r)
+		origin.preserveContent() // Also covers handlers returning an empty body.
 	})
 }
 
@@ -140,4 +143,42 @@ func readMethod(w http.ResponseWriter, r *http.Request) bool {
 	w.Header().Set("Allow", "GET, HEAD")
 	http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 	return false
+}
+
+// originResponse preserves copyable code and script-free HTML through proxies.
+// In particular, versioned Go imports must not become email-obfuscation links.
+type originResponse struct {
+	http.ResponseWriter
+	wroteHeader bool
+}
+
+func (w *originResponse) Unwrap() http.ResponseWriter { return w.ResponseWriter }
+
+func (w *originResponse) preserveContent() {
+	for _, value := range w.Header().Values("Cache-Control") {
+		for _, directive := range strings.Split(value, ",") {
+			if strings.EqualFold(strings.TrimSpace(directive), "no-transform") {
+				return
+			}
+		}
+	}
+	w.Header().Add("Cache-Control", "no-transform")
+}
+
+func (w *originResponse) WriteHeader(status int) {
+	if w.wroteHeader {
+		return
+	}
+	w.preserveContent()
+	if status >= 200 {
+		w.wroteHeader = true
+	}
+	w.ResponseWriter.WriteHeader(status)
+}
+
+func (w *originResponse) Write(body []byte) (int, error) {
+	if !w.wroteHeader {
+		w.WriteHeader(http.StatusOK)
+	}
+	return w.ResponseWriter.Write(body)
 }

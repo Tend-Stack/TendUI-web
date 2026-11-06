@@ -66,3 +66,26 @@ func TestUnknownPathsDoNotServeHomepageOrPrivateFiles(t *testing.T) {
 		}
 	}
 }
+
+func TestProxyPreservesCodeAndCachePolicy(t *testing.T) {
+	h := handler()
+	for _, path := range []string{"/", "/docs/install", "/catalog/button", "/playground", "/site.css", "/missing"} {
+		for _, method := range []string{"GET", "HEAD"} {
+			w := httptest.NewRecorder()
+			h.ServeHTTP(w, httptest.NewRequest(method, path, nil))
+			response := w.Result()
+			cache := strings.Join(response.Header.Values("Cache-Control"), ",")
+			if !strings.Contains(cache, "no-transform") {
+				t.Errorf("%s %s: proxy can transform response: %q", method, path, cache)
+			}
+			if path == "/docs/install" || path == "/site.css" {
+				if !strings.Contains(cache, "must-revalidate") {
+					t.Errorf("%s: lost cache policy", path)
+				}
+			}
+			if method == "GET" && path == "/docs/install" && !strings.Contains(w.Body.String(), "GothUI/v2026@v2026.1.0") {
+				t.Fatal("release installation command missing")
+			}
+		}
+	}
+}

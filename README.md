@@ -74,3 +74,8 @@ Links point to the project repositories; access follows their GitHub visibility.
 There is no mailing-list form or unimplemented sign-up action.
 
 MIT. See [LICENSE](LICENSE).
+
+The server adds `Cache-Control: no-transform` while preserving each route's cache
+policy. This keeps proxies from rewriting versioned Go commands as email links
+or injecting email-decoding scripts. Production smoke checks must inspect the
+actual HTML through the public domain as well as the origin/container response.
