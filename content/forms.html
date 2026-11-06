@@ -1,6 +1,6 @@
 {{define "body"}}
 <h2>Keep the native contract</h2><p>Use <code>Form</code> with a real action and method. Give each submitted control a name, each input an accessible label, and each action an explicit button type. Browser validation improves feedback; always validate again on the server.</p>
-<pre><code>@components.Form(components.FormProps{
+<pre tabindex="0" aria-label="Native form example"><code>@components.Form(components.FormProps{
     Action: "/projects", Method: components.MethodPost,
 }) {
     @components.Input(components.InputProps{

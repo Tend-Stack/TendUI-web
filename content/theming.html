@@ -1,13 +1,13 @@
 {{define "body"}}
 <h2>Let the document choose a color mode</h2><p>Set <code>data-theme="light"</code> or <code>data-theme="dark"</code> on the root HTML element. Omit the attribute to follow the operating system. With templ, set <code>LayoutProps.Theme</code>.</p>
-<pre><code>components.LayoutProps{
+<pre tabindex="0" aria-label="Theme configuration example"><code>components.LayoutProps{
     Title: "Your app",
     Theme: components.ThemeDark,
 }</code></pre>
 <h2>Compose appearance settings</h2><p>The <a href="/settings">appearance studio</a> demonstrates color presets, spacing, corners, font family, text size, page width, and elevation. Preview before saving. Preferences in this demo use browser cookies; your own application controls storage.</p>
 <p>Use its <strong>Download Go settings</strong> link for a typed <code>components.Appearance</code> value. Use <strong>Download CSS overrides</strong> for the corresponding stylesheet. Downloads reflect the applied preview, not unsubmitted form choices.</p>
 <h2>Override tokens</h2><p>Load your stylesheet after GothUI. Variables are the extension point; avoid depending on internal selector details.</p>
-<pre><code>:root {
+<pre tabindex="0" aria-label="CSS token overrides"><code>:root {
   --gothui-content-width: 90rem;
   --gothui-radius: 0.8rem;
 }</code></pre>

@@ -18,7 +18,7 @@
 body { margin: 0; }
 a { color: inherit; text-underline-offset: .25em; }
 a:hover { color: var(--accent); }
-a:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 6px; }
+a:focus-visible, summary:focus-visible, pre:focus-visible, .table-scroll:focus-visible { outline: 3px solid var(--accent); outline-offset: 6px; }
 button, a, summary { -webkit-tap-highlight-color: transparent; }
 ::selection { background: var(--accent); color: var(--ink); }
 .page { max-width: 1920px; margin-inline: auto; padding-inline: clamp(1.25rem, 5vw, 5rem); }

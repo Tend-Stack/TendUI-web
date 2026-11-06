@@ -7,7 +7,7 @@
 <h2>What your application supplies</h2>
 <p>GothUI does not own authentication, routing, persistence, sessions, or request protection. It does not ship a JavaScript runtime. If you choose HTMX, you supply that runtime and the response behavior.</p>
 <h2>Three packages</h2>
-<div class="table-scroll"><table><caption>Production package responsibilities</caption><thead><tr><th>Import suffix</th><th>Responsibility</th></tr></thead><tbody><tr><td><code>gothui</code> (module root)</td><td>Embedded stylesheet and asset handler.</td></tr><tr><td><code>/components</code></td><td>Typed templ components and appearance settings.</td></tr><tr><td><code>/render</code></td><td>Full-page and fragment HTTP responses.</td></tr></tbody></table></div>
+<div class="table-scroll" tabindex="0" role="region" aria-label="Package reference"><table><caption>Production package responsibilities</caption><thead><tr><th>Import suffix</th><th>Responsibility</th></tr></thead><tbody><tr><td><code>gothui</code> (module root)</td><td>Embedded stylesheet and asset handler.</td></tr><tr><td><code>/components</code></td><td>Typed templ components and appearance settings.</td></tr><tr><td><code>/render</code></td><td>Full-page and fragment HTTP responses.</td></tr></tbody></table></div>
 <p>The asset and render helpers use the Go standard library. Components depend on templ. Generated Go is included, so consuming the library does not require its generator; authoring your own templ pages does.</p>
 <h2>Explore by doing</h2><p>Use the <a href="/playground">playground</a> to test states and appearance, the <a href="/examples">application examples</a> to see complete flows, and the <a href="/catalog">component reference</a> to take a recipe into your own app.</p>
 {{end}}

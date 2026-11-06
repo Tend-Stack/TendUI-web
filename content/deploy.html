@@ -1,5 +1,5 @@
 {{define "body"}}
-<h2>Build once</h2><pre><code>templ generate
+<h2>Build once</h2><pre tabindex="0" aria-label="Build commands"><code>templ generate
 CGO_ENABLED=0 go build -trimpath -o app .</code></pre><p>Generate your application’s templ files before the Go build. GothUI’s component Go is already included in the module. The executable contains the stylesheet; no asset directory or frontend toolchain is required at runtime.</p>
 <h2>Serve the asset route</h2><p>Keep <code>/gothui/static/</code> mapped to <code>gothui.AssetHandler()</code>. The handler supplies content-derived ETags and conditional requests. Do not put authenticated user data into shared public caches.</p>
 <h2>Own the HTTP server</h2><p>Use timeouts, request-size limits, graceful shutdown, health probes, and your platform’s TLS routing. If a proxy terminates TLS, trust forwarded headers only from that proxy. Set cookies and cross-origin protection according to your deployment.</p>

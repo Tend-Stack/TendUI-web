@@ -1,6 +1,6 @@
 {{define "body"}}
 <h2>Optional means application-owned</h2><p>GothUI emits HTMX attributes but does not bundle HTMX or any other JavaScript. This website’s public demos work with native HTML. In an enhanced app, load your own pinned, locally served HTMX runtime and use an appropriate Content Security Policy.</p>
-<pre><code>components.ButtonProps{
+<pre tabindex="0" aria-label="HTMX button configuration"><code>components.ButtonProps{
     Text: "Load details",
     Type: components.ButtonTypeButton,
     HxGet: "/details",
@@ -9,7 +9,7 @@
 }</code></pre>
 <p>A button that only loads a fragment still needs an equivalent ordinary-page link or form for users without scripts. The <a href="/editing">inline editing example</a> uses native form actions alongside HTMX attributes.</p>
 <h2>Respond with the right representation</h2><p>Use <code>render.HTML</code> with the complete document and optional fragment. It selects the fragment for supported HTMX requests and emits the appropriate <code>Vary</code> headers. History restoration must receive a complete page.</p>
-<pre><code>err := render.HTML(w, r, http.StatusOK, fullPage, fragment)
+<pre tabindex="0" aria-label="HTTP fragment rendering"><code>err := render.HTML(w, r, http.StatusOK, fullPage, fragment)
 if err != nil {
     log.Printf("render: %v", err)
 }</code></pre>
