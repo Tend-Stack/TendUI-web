@@ -31,8 +31,8 @@ jobs:
       - name: Smoke-test the deployed image
         run: |
           docker run --detach --name gothui-web-ci -p 127.0.0.1:8080:8080 gothui-web:ci
-          trap 'docker rm -f gothui-web-ci' EXIT
-          curl --fail --retry 10 --retry-connrefused --retry-delay 1 http://127.0.0.1:8080/healthz
+          trap 'docker logs gothui-web-ci; docker rm -f gothui-web-ci' EXIT
+          curl --fail --max-time 5 --retry 10 --retry-all-errors --retry-delay 1 --retry-max-time 20 http://127.0.0.1:8080/healthz
           curl --fail http://127.0.0.1:8080/ | grep -F 'Start building'
           curl --fail http://127.0.0.1:8080/site.css > /dev/null
           curl --fail http://127.0.0.1:8080/docs/install > /dev/null
