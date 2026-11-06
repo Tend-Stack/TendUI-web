@@ -52,7 +52,16 @@ test('native site and demo workflows work with scripts disabled', async ({ brows
 test('1920px maximum, keyboard skip, and reduced motion', async ({ page }, testInfo) => {
   await page.goto('/');
   if (testInfo.project.name === 'desktop') {
-    await page.setViewportSize({ width: 2560, height: 1440 });
+    for (const width of [320, 768, 1024, 1280, 1440, 1920, 2560]) {
+      await page.setViewportSize({ width, height: 900 });
+      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `viewport ${width}`).toBe(true);
+      const welcome = await page.locator('.mascot-welcome').boundingBox();
+      const card = await page.locator('.sample-card').boundingBox();
+      expect(welcome.x + welcome.width <= card.x + 1 || welcome.y + welcome.height <= card.y + 1, `preview content overlaps at ${width}`).toBe(true);
+      if (width === 768 || width === 1440) {
+        await page.screenshot({ path: testInfo.outputPath(`homepage-${width}.png`), fullPage: true, animations: 'disabled' });
+      }
+    }
     expect((await page.locator('.page').boundingBox()).width).toBe(1920);
   }
   await page.keyboard.press('Tab');
