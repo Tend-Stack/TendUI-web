@@ -1,9 +1,9 @@
 # Web and GitHub brand assets
 
-Selected from the operator-provided GothUI Gopher Brand Kit. Originals stay
+Selected from the operator-provided Tend UI Gopher Brand Kit. Originals stay
 outside the repositories. SVGs were checked for scripts, event handlers,
-external references and raster wrappers; a redundant invalid gradient attribute
-was removed. Geometry, colors and wordmark text are preserved. No web fonts,
+external references and raster wrappers. Supplied files are copied unchanged;
+geometry, colors and wordmark text are preserved. No web fonts,
 image-generation service or client-side JavaScript are required.
 
 | Asset | Format | Use |
@@ -16,8 +16,8 @@ image-generation service or client-side JavaScript are required.
 | `/brand/github-social-preview.png` | PNG, 1280 × 640 | GitHub repository social preview upload |
 
 The vectors are 1–6 KB each and have explicit dimensions to avoid layout shifts.
-The homepage header pairs the gopher SVG with HTML wordmark and tagline text,
-keeping the tagline readable instead of shrinking it inside the full lockup.
+The shared header pairs the new kit’s gopher SVG with a readable HTML Tend UI
+wordmark. Full compact lockups remain available for README use and download.
 The social PNGs are supplied publication-sized illustrations, not SVG wrappers;
 they are only fetched by sharing clients or explicit downloads. The website
 uses versioned asset URLs. The friendly URLs above remain available for downloads.

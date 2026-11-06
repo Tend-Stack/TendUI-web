@@ -84,7 +84,7 @@ func TestProxyPreservesCodeAndCachePolicy(t *testing.T) {
 					t.Errorf("%s: lost cache policy", path)
 				}
 			}
-			if method == "GET" && path == "/docs/install" && !strings.Contains(w.Body.String(), "GothUI/v2026@v2026.1.0") {
+			if method == "GET" && path == "/docs/install" && !strings.Contains(w.Body.String(), "TendUI/v2026@main") {
 				t.Fatal("release installation command missing")
 			}
 		}
@@ -94,9 +94,9 @@ func TestProxyPreservesCodeAndCachePolicy(t *testing.T) {
 func TestThemeBehindPublicTLSProxy(t *testing.T) {
 	h := handler()
 	for _, hx := range []bool{false, true} {
-		r := httptest.NewRequest("POST", "http://gothui.com/api/theme/toggle", nil)
-		r.Header.Set("Origin", "https://gothui.com")
-		r.Header.Set("Referer", "https://gothui.com/playground?theme=dark&state=disabled")
+		r := httptest.NewRequest("POST", "http://tendui.com/api/theme/toggle", nil)
+		r.Header.Set("Origin", "https://tendui.com")
+		r.Header.Set("Referer", "https://tendui.com/playground?theme=dark&state=disabled")
 		if hx {
 			r.Header.Set("HX-Request", "true")
 		}
@@ -113,12 +113,12 @@ func TestThemeBehindPublicTLSProxy(t *testing.T) {
 		if len(cookies) != 1 || cookies[0].Value != "light" || !cookies[0].Secure || !cookies[0].HttpOnly {
 			t.Fatal("proxy lost theme or secure cookie policy")
 		}
-		if r.Header.Get("Referer") != "https://gothui.com/playground?theme=dark&state=disabled" {
+		if r.Header.Get("Referer") != "https://tendui.com/playground?theme=dark&state=disabled" {
 			t.Fatal("original request mutated")
 		}
 	}
-	for _, ref := range []string{"https://evil.example/playground", "http://gothui.com/playground", "https://gothui.com:8443/playground", "https://user@gothui.com/playground"} {
-		r := httptest.NewRequest("POST", "http://gothui.com/api/theme/toggle", nil)
+	for _, ref := range []string{"https://evil.example/playground", "http://tendui.com/playground", "https://tendui.com:8443/playground", "https://user@tendui.com/playground"} {
+		r := httptest.NewRequest("POST", "http://tendui.com/api/theme/toggle", nil)
 		r.Header.Set("Referer", ref)
 		w := httptest.NewRecorder()
 		h.ServeHTTP(w, r)
@@ -126,9 +126,9 @@ func TestThemeBehindPublicTLSProxy(t *testing.T) {
 			t.Errorf("accepted foreign origin %s", ref)
 		}
 	}
-	r := httptest.NewRequest("POST", "http://gothui.com/api/theme/toggle", nil)
+	r := httptest.NewRequest("POST", "http://tendui.com/api/theme/toggle", nil)
 	r.Header.Set("Origin", "https://evil.example")
-	r.Header.Set("Referer", "https://gothui.com/playground")
+	r.Header.Set("Referer", "https://tendui.com/playground")
 	w := httptest.NewRecorder()
 	h.ServeHTTP(w, r)
 	if w.Code != http.StatusForbidden || len(w.Result().Cookies()) != 0 {
@@ -139,15 +139,12 @@ func TestThemeBehindPublicTLSProxy(t *testing.T) {
 func TestPagesUseVersionedStylesheets(t *testing.T) {
 	h := handler()
 	pattern := regexp.MustCompile(`rel="stylesheet" href="([^"]+)"`)
-	versioned := regexp.MustCompile(`^/assets/(site|docs|gothui)-[a-f0-9]{64}\.css$`)
+	versioned := regexp.MustCompile(`^/assets/(site|docs|tendui|header)-[a-f0-9]{64}\.css$`)
 	for _, path := range []string{"/", "/docs", "/docs/install"} {
 		page := httptest.NewRecorder()
 		h.ServeHTTP(page, httptest.NewRequest("GET", path, nil))
 		styles := pattern.FindAllStringSubmatch(page.Body.String(), -1)
-		expected := 2
-		if path == "/" {
-			expected = 1
-		}
+		expected := 3 // Library, shared header, then page styles.
 		if len(styles) != expected {
 			t.Fatalf("%s: expected %d stylesheets, got %d", path, expected, len(styles))
 		}
@@ -169,7 +166,7 @@ func TestPagesUseVersionedStylesheets(t *testing.T) {
 			}
 		}
 		if path != "/" && (!strings.Contains(page.Body.String(), `class="app-shell"`) || !strings.Contains(page.Body.String(), `class="prose"`)) {
-			t.Fatal("documentation no longer composes GothUI shell and prose")
+			t.Fatal("documentation no longer composes TendUI shell and prose")
 		}
 	}
 }
@@ -188,7 +185,7 @@ func TestPreparedBrandAssets(t *testing.T) {
 	}
 	page := httptest.NewRecorder()
 	h.ServeHTTP(page, httptest.NewRequest("GET", "/", nil))
-	for _, expected := range []string{"Good interfaces. Pure Go.</span>", brandURL("mascot.svg"), "https://gothui.com" + brandURL("og-image.png")} {
+	for _, expected := range []string{"Beautiful interfaces.", "No build pipeline.", brandURL("mascot.svg"), "https://tendui.com" + brandURL("og-image.png")} {
 		if !strings.Contains(page.Body.String(), expected) {
 			t.Errorf("missing brand reference %s", expected)
 		}

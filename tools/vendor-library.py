@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Vendor a clean GothUI checkout without registry credentials in the image.
+"""Vendor a clean TendUI checkout without registry credentials in the image.
 
 Uses Go's ordinary module-proxy and vendoring mechanisms. The temporary proxy
 and module cache are removed automatically. Runtime builds require only Go.
-Usage: python3 tools/vendor-library.py /path/to/GothUI
+Usage: python3 tools/vendor-library.py /path/to/TendUI
 """
 import datetime
 import io
@@ -20,7 +20,7 @@ import zipfile
 source = Path(sys.argv[1]).resolve()
 root = Path(__file__).resolve().parents[1]
 go = os.environ.get("GO", "go")
-module = "github.com/Tend-Stack/GothUI/v2026"
+module = "github.com/Tend-Stack/TendUI/v2026"
 
 def git(*args):
     return subprocess.check_output(["git", "-C", str(source), *args])
@@ -43,7 +43,7 @@ else:
 escaped = "".join("!" + c.lower() if c.isupper() else c for c in module)
 shared_cache = Path(subprocess.check_output([go, "env", "GOMODCACHE"], text=True).strip())
 
-with tempfile.TemporaryDirectory(prefix="gothui-vendor-") as temp:
+with tempfile.TemporaryDirectory(prefix="tendui-vendor-") as temp:
     temporary = Path(temp)
     proxy = temporary / "proxy"
     entry = proxy / escaped / "@v"
@@ -64,4 +64,4 @@ with tempfile.TemporaryDirectory(prefix="gothui-vendor-") as temp:
     ]:
         subprocess.run([go, *args], cwd=root, env=env, check=True)
     (root / "library-version.json").write_text(json.dumps({"module": module, "version": version, "commit": revision}, indent=2) + "\n")
-    print("Vendored GothUI " + version + " from clean commit " + revision[:12])
+    print("Vendored TendUI " + version + " from clean commit " + revision[:12])

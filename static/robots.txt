@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://gothui.com/sitemap.xml
+Sitemap: https://tendui.com/sitemap.xml

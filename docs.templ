@@ -1,31 +1,38 @@
 package main
 
-import "github.com/Tend-Stack/GothUI/v2026/components"
+import "github.com/Tend-Stack/TendUI/v2026/components"
 
-templ documentationPage(g guide, navigation []components.NavItem, body templ.Component) {
+templ documentationPage(g guide, navigation, section []components.NavItem, theme string, body templ.Component) {
     <!DOCTYPE html>
-    <html lang="en" data-theme="dark">
+    <html
+        lang="en"
+        if theme != "" {
+            data-theme={ theme }
+        }
+    >
         <head>
             <meta charset="utf-8"/>
             <meta name="viewport" content="width=device-width, initial-scale=1"/>
-            <title>{ g.Title } · GothUI</title>
+            <meta name="color-scheme" content="dark light"/>
+            <title>{ g.Title } · TendUI</title>
             <meta name="description" content={ g.Summary }/>
-            <meta property="og:title" content={ g.Title + " · GothUI" }/>
+            <meta property="og:title" content={ g.Title + " · TendUI" }/>
             <meta property="og:description" content={ g.Summary }/>
-            <meta property="og:image" content={ "https://gothui.com" + brandURL("og-image.png") }/>
+            <meta property="og:image" content={ "https://tendui.com" + brandURL("og-image.png") }/>
             <meta name="twitter:card" content="summary_large_image"/>
-            <link rel="canonical" href={ templ.SafeURL("https://gothui.com" + g.Path) }/>
+            <link rel="canonical" href={ templ.SafeURL("https://tendui.com" + g.Path) }/>
             <link rel="icon" href={ templ.SafeURL(brandURL("favicon.svg")) } type="image/svg+xml"/>
             <link rel="stylesheet" href={ templ.SafeURL(libraryStylesheetURL) }/>
+            @headerStylesheet()
             <link rel="stylesheet" href={ templ.SafeURL(docsStylesheetURL) }/>
         </head>
         <body>
             @components.AppShell(components.AppShellProps{
-                Brand: "GothUI", BrandHref: "/", Navigation: navigation,
-                Actions: documentationNavigation(), Footer: documentationSidebarFooter(),
+                Brand: "TendUI", BrandHref: "/", Navigation: navigation,
+                Header: siteHeader(g.Path, section), Footer: documentationSidebarFooter(),
             }) {
                 @components.Prose(components.ProseProps{Measure: components.MeasureWide}) {
-                    <p class="eyebrow">GOTHUI / DOCUMENTATION</p>
+                    <p class="eyebrow">TENDUI / DOCUMENTATION</p>
                     <h1>{ g.Title }</h1>
                     <p class="doc-lead">{ g.Summary }</p>
                     @body
@@ -39,19 +46,9 @@ templ documentationPage(g guide, navigation []components.NavItem, body templ.Com
     </html>
 }
 
-templ documentationNavigation() {
-    <nav aria-label="Primary">
-        <a href="/docs">Docs</a>
-        <a href="/catalog">Components</a>
-        <a href="/examples">Examples</a>
-        <a href="/playground">Playground</a>
-        <a class="source-link" href="https://github.com/Tend-Stack/GothUI">Source ↗</a>
-    </nav>
-}
-
 templ documentationSidebarFooter() {
     <img class="docs-mascot" src={ templ.SafeURL(brandURL("mascot-guide.svg")) } alt="" width="88" height="88" loading="lazy"/>
     <p>Go-native. HTML-first.<br/>Yours to compose.</p>
-    <small>Built with GothUI 2026.1.0</small>
-    <p><a href="https://github.com/Tend-Stack/GothUI-Web">Website source ↗</a></p>
+    <small>Built with TendUI · development</small>
+    <p><a href="https://github.com/Tend-Stack/TendUI-web">Website source ↗</a></p>
 }

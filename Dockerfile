@@ -7,11 +7,11 @@ COPY static ./static
 COPY content ./content
 COPY library-version.json ./
 ARG VERSION=2026.1.0-dev
-RUN CGO_ENABLED=0 GOPROXY=off go build -mod=vendor -trimpath -ldflags="-s -w -X main.version=${VERSION}" -o /gothui-web .
+RUN CGO_ENABLED=0 GOPROXY=off go build -mod=vendor -trimpath -ldflags="-s -w -X main.version=${VERSION}" -o /tendui-web .
 
 FROM scratch
-COPY --from=build /gothui-web /gothui-web
+COPY --from=build /tendui-web /tendui-web
 USER 65532:65532
 ENV PORT=8080
 EXPOSE 8080
-ENTRYPOINT ["/gothui-web"]
+ENTRYPOINT ["/tendui-web"]

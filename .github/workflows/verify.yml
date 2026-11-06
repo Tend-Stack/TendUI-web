@@ -27,11 +27,11 @@ jobs:
       - name: Vet
         run: go vet ./...
       - name: Build deployment image
-        run: docker build --build-arg VERSION="$(git describe --tags --long --dirty --always)" -t gothui-web:ci .
+        run: docker build --build-arg VERSION="$(git describe --tags --long --dirty --always)" -t tendui-web:ci .
       - name: Smoke-test the deployed image
         run: |
-          docker run --detach --name gothui-web-ci -p 127.0.0.1:8080:8080 gothui-web:ci
-          trap 'docker logs gothui-web-ci; docker rm -f gothui-web-ci' EXIT
+          docker run --detach --name tendui-web-ci -p 127.0.0.1:8080:8080 tendui-web:ci
+          trap 'docker logs tendui-web-ci; docker rm -f tendui-web-ci' EXIT
           curl --fail --max-time 5 --retry 10 --retry-all-errors --retry-delay 1 --retry-max-time 20 http://127.0.0.1:8080/healthz
           curl --fail http://127.0.0.1:8080/ | grep -F 'Start building'
           curl --fail http://127.0.0.1:8080/site.css > /dev/null

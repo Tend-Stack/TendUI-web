@@ -1,5 +1,5 @@
 /tests/results/*
 !/tests/results/.gitkeep
-/gothui-web
+/tendui-web
 
 /tests/browser/node_modules/

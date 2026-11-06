@@ -1,64 +1,49 @@
-/* Documentation built on GothUI's AppShell, Prose and semantic CSS.
+/* Documentation built on TendUI's AppShell, Prose and semantic CSS.
    Only branding and documentation-specific composition live here. */
 :root {
-  --gothui-heading-1: clamp(2.1rem, 3.5vw, 3.5rem);
-  --gothui-heading-2: clamp(1.4rem, 2vw, 1.8rem);
+  --tendui-heading-1: clamp(2.1rem, 3.5vw, 3.5rem);
+  --tendui-heading-2: clamp(1.4rem, 2vw, 1.8rem);
 }
 .app-shell { max-inline-size: 1920px; }
-.app-header { padding-inline: clamp(1.25rem, 3vw, 3rem); }
-.app-brand { display: inline-flex; align-items: center; gap: .75rem; }
-.app-brand::before {
-  content: "";
-  display: grid;
-  place-items: center;
-  inline-size: 2.2rem;
-  block-size: 2.2rem;
-  background: url("/brand/favicon.svg") center / contain no-repeat;
-  border: 0;
-  border-radius: var(--gothui-radius);
-  color: var(--gothui-primary);
-  font-family: var(--gothui-mono);
-}
-.app-header nav { gap: 1.25rem; font-size: .9rem; }
-.app-header nav a { text-decoration: none; }
-.app-header .source-link { color: var(--gothui-muted); }
 .app-sidebar { font-size: .9rem; }
-.app-sidebar summary { color: var(--gothui-muted); }
+.app-sidebar summary { list-style: none; color: var(--tendui-muted); font-size: .6875rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+.app-sidebar summary::-webkit-details-marker { display: none; }
 .app-sidebar footer p { margin-block: .75rem; }
 .app-main { padding: clamp(1.5rem, 4vw, 4rem); }
 .app-main > .prose { margin-inline: auto; }
-.eyebrow { font-size: .75rem; letter-spacing: .08em; color: var(--gothui-muted); }
+.eyebrow { font-size: .75rem; letter-spacing: .08em; color: var(--tendui-muted); }
 .prose h1 { margin-block-start: 1rem; max-inline-size: 23ch; font-size: clamp(1.8rem, 3vw, 2.6rem); }
-.doc-lead { font-size: 1.15rem; color: var(--gothui-muted); }
+.doc-lead { font-size: 1.15rem; color: var(--tendui-muted); }
 .doc-callout {
   padding: 1.25rem 1.5rem;
   margin-block: 2rem;
-  background: var(--gothui-subtle);
-  border-inline-start: 3px solid var(--gothui-primary);
-  border-radius: 0 var(--gothui-radius) var(--gothui-radius) 0;
+  background: var(--tendui-subtle);
+  border-inline-start: 3px solid var(--tendui-primary);
+  border-radius: 0 var(--tendui-radius) var(--tendui-radius) 0;
 }
 .doc-callout p:last-child { margin-block-end: 0; }
-.prose pre { border: 1px solid var(--gothui-border); }
+.prose pre { border: 1px solid var(--tendui-border); }
 .table-scroll { overflow-x: auto; margin-block: 1.5rem; }
-.doc-next { display: flex; flex-wrap: wrap; gap: 1rem 2rem; border-block-start: 1px solid var(--gothui-border); margin-block-start: 3rem; padding-block-start: 1.5rem; }
-.example-directory { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gothui-grid-gap); }
+.doc-next { display: flex; flex-wrap: wrap; gap: 1rem 2rem; border-block-start: 1px solid var(--tendui-border); margin-block-start: 3rem; padding-block-start: 1.5rem; }
+.example-directory { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--tendui-grid-gap); }
 .example-directory article h2 { margin-block-start: 0; }
 @media (max-width: 850px) {
   .app-shell { grid-template-columns: minmax(0, 1fr); }
-  .app-header > .cluster { inline-size: 100%; }
-  .app-sidebar { border-inline-end: 0; border-block-end: 1px solid var(--gothui-border); }
+  .app-sidebar { border-inline-end: 0; border-block-end: 1px solid var(--tendui-border); }
   .app-sidebar nav ul { display: flex; flex-wrap: wrap; gap: .25rem; }
   .app-sidebar nav a { padding: .5rem .65rem; }
   .app-sidebar footer { display: none; }
 }
 @media (max-width: 600px) { .example-directory { grid-template-columns: minmax(0, 1fr); } }
-@media print { .app-shell { display: block; } .app-sidebar, .app-header, .doc-next { display: none; } .app-main { padding: 0; } .prose pre { white-space: pre-wrap; overflow-wrap: anywhere; } }
+/* The compact header menu lists the guides, so the sidebar steps aside. */
+@media (max-width: 48rem) { .app-sidebar { display: none; } }
+@media print { .app-shell { display: block; } .app-sidebar, .doc-next { display: none; } .app-main { padding: 0; } .prose pre { white-space: pre-wrap; overflow-wrap: anywhere; } }
 
 .docs-mascot { display: block; margin-block: 1.5rem .5rem; }
 .example-section { margin-block-start: 2.5rem; }
-.prose .example-section > h2 { font-size: 1.25rem; font-weight: 600; color: var(--gothui-muted); margin-block: 0 1rem; }
+.prose .example-section > h2 { font-size: 1.25rem; font-weight: 600; color: var(--tendui-muted); margin-block: 0 1rem; }
 .example-directory article { display: flex; flex-direction: column; margin: 0; }
 .prose .example-directory h3 { font-size: 1.2rem; font-weight: 600; line-height: 1.35; margin: 0 0 .75rem; }
-.example-directory p { color: var(--gothui-muted); }
+.example-directory p { color: var(--tendui-muted); }
 .example-directory .example-link { margin-block-start: auto; font-size: .9rem; text-decoration: none; }
 .example-directory .example-link:hover { text-decoration: underline; }

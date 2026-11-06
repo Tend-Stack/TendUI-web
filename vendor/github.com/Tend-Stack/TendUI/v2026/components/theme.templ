@@ -1,0 +1,57 @@
+package components
+
+// ThemeToggleProps optionally supplies a localized label and the application's CSRF token.
+// Use outside other forms. The native POST works without HTMX or any JavaScript.
+type ThemeToggleProps struct {
+	Label     string
+	CSRFToken string
+	// IconOnly hides the visible text; Label still names the button.
+	IconOnly bool
+}
+
+func themeToggleProps(options []ThemeToggleProps) ThemeToggleProps {
+	if len(options) > 0 {
+		return options[0]
+	}
+	return ThemeToggleProps{}
+}
+
+// ThemeToggle retains the requested HTMX contract. For reliable root theming,
+// an HTMX-aware endpoint should respond with HX-Redirect to a validated page URL
+// without a theme preview parameter that would override the saved cookie.
+templ ThemeToggle(options ...ThemeToggleProps) {
+	{{ props := themeToggleProps(options) }}
+	<form
+		method="post"
+		action="/api/theme/toggle"
+		class="theme-toggle"
+		if props.IconOnly {
+			data-icon-only="true"
+		}
+	>
+		if props.CSRFToken != "" {
+			<input type="hidden" name="csrf_token" value={ props.CSRFToken }/>
+		}
+		<button
+			type="submit"
+			class="outline"
+			hx-post="/api/theme/toggle"
+			hx-target="html"
+			hx-swap="outerHTML"
+			if props.IconOnly {
+				aria-label={ fallback(props.Label, "Toggle theme") }
+				title={ fallback(props.Label, "Toggle theme") }
+			}
+		>
+			<span class="theme-toggle-icon" data-mode="light">
+				@Icon(IconProps{Name: IconMoon, Size: IconSizeSmall})
+			</span>
+			<span class="theme-toggle-icon" data-mode="dark">
+				@Icon(IconProps{Name: IconSun, Size: IconSizeSmall})
+			</span>
+			if !props.IconOnly {
+				{ fallback(props.Label, "Toggle theme") }
+			}
+		</button>
+	</form>
+}
