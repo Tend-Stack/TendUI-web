@@ -22,6 +22,7 @@ import (
 	"time"
 
 	"github.com/Tend-Stack/GothUI/v2026"
+	"github.com/Tend-Stack/GothUI/v2026/components"
 	"github.com/Tend-Stack/GothUI/v2026/examples/site"
 )
 
@@ -72,7 +73,7 @@ func main() {
 
 func handler() http.Handler {
 	mux := http.NewServeMux()
-	demos := site.Handler()
+	demos := site.HandlerWithOptions(demoOptions())
 	registerDocs(mux)
 	libraryAssets := gothui.AssetHandler()
 	mux.HandleFunc(libraryStylesheetURL, func(w http.ResponseWriter, r *http.Request) {
@@ -98,10 +99,10 @@ func handler() http.Handler {
 		}
 	})
 	assetRoutes := []struct{ route, file, contentType string }{
-		{"/", "index.html", "text/html; charset=utf-8"},
 		{"/site.css", "site.css", "text/css; charset=utf-8"},
 		{siteStylesheetURL, "site.css", "text/css; charset=utf-8"},
 		{docsStylesheetURL, "docs.css", "text/css; charset=utf-8"},
+		{headerStylesheetURL, "header.css", "text/css; charset=utf-8"},
 		{"/favicon.svg", "brand/favicon.svg", "image/svg+xml"},
 		{"/robots.txt", "robots.txt", "text/plain; charset=utf-8"},
 	}
@@ -110,15 +111,8 @@ func handler() http.Handler {
 	}
 	for _, asset := range assetRoutes {
 		data := publishedAsset("static/" + asset.file)
-		if asset.file == "index.html" {
-			data = bytes.ReplaceAll(data, []byte(`href="/site.css"`), []byte(`href="`+siteStylesheetURL+`"`))
-		}
 		etag := fmt.Sprintf(`"%x"`, sha256.Sum256(data))
 		mux.HandleFunc(asset.route, func(w http.ResponseWriter, r *http.Request) {
-			if r.URL.Path != asset.route {
-				demos.ServeHTTP(w, canonicalDemoRequest(r))
-				return
-			}
 			if !readMethod(w, r) {
 				return
 			}
@@ -128,6 +122,22 @@ func handler() http.Handler {
 			http.ServeContent(w, r, asset.file, time.Time{}, bytes.NewReader(data))
 		})
 	}
+	landing := renderLanding()
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/" {
+			demos.ServeHTTP(w, canonicalDemoRequest(r))
+			return
+		}
+		if !readMethod(w, r) {
+			return
+		}
+		page := landing[siteTheme(r)]
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		w.Header().Set("Cache-Control", "public, max-age=0, must-revalidate")
+		w.Header().Set("Vary", "Cookie") // The saved theme changes the markup.
+		w.Header().Set("ETag", page.etag)
+		http.ServeContent(w, r, "index.html", time.Time{}, bytes.NewReader(page.body))
+	})
 	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		if !readMethod(w, r) {
 			return
@@ -234,4 +244,23 @@ func canonicalDemoRequest(r *http.Request) *http.Request {
 		clone.Header.Set(name, u.String())
 	}
 	return clone
+}
+
+type landingResponse struct {
+	body []byte
+	etag string
+}
+
+// renderLanding prepares the home page once per theme so conditional requests
+// keep working while the markup follows the saved appearance.
+func renderLanding() map[components.Theme]landingResponse {
+	pages := make(map[components.Theme]landingResponse, 3)
+	for _, theme := range []components.Theme{components.ThemeLight, components.ThemeDark, components.ThemeSystem} {
+		var buf bytes.Buffer
+		if err := landingPage(themeAttribute(theme)).Render(context.Background(), &buf); err != nil {
+			panic(err)
+		}
+		pages[theme] = landingResponse{buf.Bytes(), fmt.Sprintf(`"%x"`, sha256.Sum256(buf.Bytes()))}
+	}
+	return pages
 }

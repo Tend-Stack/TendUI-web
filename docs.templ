@@ -2,12 +2,18 @@ package main
 
 import "github.com/Tend-Stack/GothUI/v2026/components"
 
-templ documentationPage(g guide, navigation []components.NavItem, body templ.Component) {
+templ documentationPage(g guide, navigation, section []components.NavItem, theme string, body templ.Component) {
     <!DOCTYPE html>
-    <html lang="en" data-theme="dark">
+    <html
+        lang="en"
+        if theme != "" {
+            data-theme={ theme }
+        }
+    >
         <head>
             <meta charset="utf-8"/>
             <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <meta name="color-scheme" content="dark light"/>
             <title>{ g.Title } · GothUI</title>
             <meta name="description" content={ g.Summary }/>
             <meta property="og:title" content={ g.Title + " · GothUI" }/>
@@ -17,12 +23,13 @@ templ documentationPage(g guide, navigation []components.NavItem, body templ.Com
             <link rel="canonical" href={ templ.SafeURL("https://gothui.com" + g.Path) }/>
             <link rel="icon" href={ templ.SafeURL(brandURL("favicon.svg")) } type="image/svg+xml"/>
             <link rel="stylesheet" href={ templ.SafeURL(libraryStylesheetURL) }/>
+            @headerStylesheet()
             <link rel="stylesheet" href={ templ.SafeURL(docsStylesheetURL) }/>
         </head>
         <body>
             @components.AppShell(components.AppShellProps{
                 Brand: "GothUI", BrandHref: "/", Navigation: navigation,
-                Actions: documentationNavigation(), Footer: documentationSidebarFooter(),
+                Header: siteHeader(g.Path, section), Footer: documentationSidebarFooter(),
             }) {
                 @components.Prose(components.ProseProps{Measure: components.MeasureWide}) {
                     <p class="eyebrow">GOTHUI / DOCUMENTATION</p>
@@ -37,16 +44,6 @@ templ documentationPage(g guide, navigation []components.NavItem, body templ.Com
             }
         </body>
     </html>
-}
-
-templ documentationNavigation() {
-    <nav aria-label="Primary">
-        <a href="/docs">Docs</a>
-        <a href="/catalog">Components</a>
-        <a href="/examples">Examples</a>
-        <a href="/playground">Playground</a>
-        <a class="source-link" href="https://github.com/Tend-Stack/GothUI">Source ↗</a>
-    </nav>
 }
 
 templ documentationSidebarFooter() {

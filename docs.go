@@ -44,13 +44,15 @@ func registerDocs(mux *http.ServeMux) {
 			body := templ.ComponentFunc(func(ctx context.Context, w io.Writer) error {
 				return page.ExecuteTemplate(w, "body", nil)
 			})
-			if err := documentationPage(g, navigation, body).Render(r.Context(), &buf); err != nil {
+			section := navigation[:len(navigation)-2] // Guides only; Examples and Components have their own header items.
+			if err := documentationPage(g, navigation, section, themeAttribute(siteTheme(r)), body).Render(r.Context(), &buf); err != nil {
 				log.Printf("documentation render: %v", err)
 				http.Error(w, "Unable to render page", http.StatusInternalServerError)
 				return
 			}
 			w.Header().Set("Content-Type", "text/html; charset=utf-8")
 			w.Header().Set("Cache-Control", "public, max-age=0, must-revalidate")
+			w.Header().Set("Vary", "Cookie") // The saved theme changes the markup.
 			if r.Method != http.MethodHead {
 				_, _ = w.Write(buf.Bytes())
 			}

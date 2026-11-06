@@ -1,0 +1,34 @@
+package main
+
+import (
+	"github.com/Tend-Stack/GothUI/v2026"
+	"github.com/Tend-Stack/GothUI/v2026/components"
+)
+
+// siteHeader is the one header for the landing page, documentation and demos.
+// active is the request path; section adds page-specific links to the compact menu.
+templ siteHeader(active string, section []components.NavItem) {
+	@components.SiteHeader(components.SiteHeaderProps{
+		Brand:      siteBrand(),
+		BrandLabel: "GothUI home",
+		BrandHref:  "/",
+		Items:      siteNavigation(active),
+		Section:    section,
+		Actions:    components.ThemeToggle(components.ThemeToggleProps{IconOnly: true}),
+		Extras:     siteSourceLink(),
+	})
+}
+
+templ siteBrand() {
+	<img src={ brandURL("mascot.svg") } alt="" width="32" height="32"/>
+	<span class="site-wordmark">Goth<span>UI</span></span>
+	<span class="site-version">{ gothui.Version }</span>
+}
+
+templ siteSourceLink() {
+	<a href="https://github.com/Tend-Stack/GothUI">Source <span aria-hidden="true">↗</span></a>
+}
+
+templ headerStylesheet() {
+	<link rel="stylesheet" href={ templ.SafeURL(headerStylesheetURL) }/>
+}

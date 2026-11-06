@@ -1,0 +1,80 @@
+package main
+
+// landingPage renders the home page with the shared header and saved theme.
+templ landingPage(theme string) {
+	<!DOCTYPE html>
+	<html
+		lang="en"
+		if theme != "" {
+			data-theme={ theme }
+		}
+	>
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<meta name="color-scheme" content="dark light"/>
+			<title>GothUI — Good interfaces. Pure Go.</title>
+			<meta name="description" content="Semantic CSS and typed templ components, embedded in your Go binary. Documentation, runnable examples, and a component playground for Go developers."/>
+			<meta property="og:title" content="GothUI — Good interfaces. Pure Go."/>
+			<meta property="og:description" content="A considered UI library for Go, templ, and HTMX. Explore the components, read the guides, and build your next interface."/>
+			<meta property="og:type" content="website"/>
+			<meta property="og:url" content="https://gothui.com/"/>
+			<meta property="og:image" content={ "https://gothui.com" + brandURL("og-image.png") }/>
+			<meta property="og:image:width" content="1200"/>
+			<meta property="og:image:height" content="630"/>
+			<meta property="og:image:alt" content="GothUI gopher — Good interfaces. Pure Go."/>
+			<meta name="twitter:card" content="summary_large_image"/>
+			<link rel="canonical" href="https://gothui.com/"/>
+			<link rel="icon" href={ templ.SafeURL(brandURL("favicon.svg")) } type="image/svg+xml"/>
+			<link rel="stylesheet" href={ templ.SafeURL(libraryStylesheetURL) }/>
+			@headerStylesheet()
+			<link rel="stylesheet" href={ templ.SafeURL(siteStylesheetURL) }/>
+		</head>
+		<body>
+			<a class="skip-link" href="#main">Skip to content</a>
+			@siteHeader("/", nil)
+			<div class="page">
+				<main id="main">
+					<section class="hero" aria-labelledby="headline">
+						<div class="hero-copy">
+							<p class="eyebrow"><span class="status-dot" aria-hidden="true"></span> GO · TEMPL · HTMX</p>
+							<h1 id="headline">Good interfaces.<br/><span>Pure Go.</span></h1>
+							<p class="intro">Thoughtful components. Semantic CSS. Everything your interface needs, right inside your Go binary.</p>
+							<div class="announcement">
+								<p class="coming-soon">Your interface, in one binary.</p>
+								<p>37 components, native interactions, and room for your next idea.</p>
+							</div>
+							<a class="button" href="/docs/install">Start building <span aria-hidden="true">↗</span></a>
+							<p class="small-note"><a href="/playground">Try the playground</a> · Go 1.26+ · MIT</p>
+						</div>
+						<figure class="showcase" aria-labelledby="showcase-caption">
+							<div class="preview-top"><span class="preview-label">THE SHAPE OF SIMPLE</span><span class="preview-index">01 / UI</span></div>
+							<div class="preview-canvas">
+								<div class="mascot-welcome"><img src={ brandURL("mascot.svg") } alt="GothUI’s cloaked gopher holding a UI card" width="144" height="144"/><div><span class="preview-label">A LITTLE CHARACTER.</span><p>A lot less setup.</p><span>Made for curious Go developers.</span></div></div>
+								<div class="sample-card">
+									<div class="sample-header"><span class="sample-icon" aria-hidden="true">✳</span><span class="sample-badge">Made with care</span></div>
+									<p class="sample-kicker">LESS SETUP. MORE MAKING.</p>
+									<h2>A little structure.<br/>A lot of possibility.</h2>
+									<p>Room to build something that feels like you.</p>
+									<div class="swatches" role="img" aria-label="A palette of violet, blue, mint, and warm neutral"><span></span><span></span><span></span><span></span></div>
+									<details>
+										<summary>Simple by nature <span aria-hidden="true">+</span></summary>
+										<p>This disclosure is native HTML. Just a browser doing what it does best.</p>
+									</details>
+								</div>
+								<div class="binary-label"><span aria-hidden="true">↳</span> One binary. All together.</div>
+							</div>
+							<figcaption id="showcase-caption"><span>HTML + CSS + GO</span><span>An interface study</span></figcaption>
+						</figure>
+					</section>
+					<section class="principles" aria-label="The GothUI approach">
+						<div><span class="principle-number">01</span><h2><a href="/docs/install">Go all the way.</a></h2><p>Styles embedded in your binary. No asset pipeline to maintain.</p></div>
+						<div><span class="principle-number">02</span><h2><a href="/catalog">Let HTML be HTML.</a></h2><p>Semantic elements, typed templ components, and native interactions.</p></div>
+						<div><span class="principle-number">03</span><h2><a href="/docs/theming">Make it yours.</a></h2><p>Themes, spacing, typography, and a little CSS motion. Your choices.</p></div>
+					</section>
+				</main>
+				<footer><p>GothUI <span class="footer-separator" aria-hidden="true">/</span> Small pieces. Considered interfaces.</p><a href="https://github.com/Tend-Stack/GothUI-Web">Website source <span aria-hidden="true">↗</span></a></footer>
+			</div>
+		</body>
+	</html>
+}

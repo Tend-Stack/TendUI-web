@@ -7,8 +7,10 @@ semantic CSS and typed templ components, embedded in your Go binary.
 
 The documentation composes GothUI’s typed `AppShell` and `Prose` components
 with its embedded semantic stylesheet. Guide content uses Go HTML templates;
-the landing page retains its own branding. Catalogs and demos share GothUI’s
-example handler. All assets are embedded. No Node, npm, JavaScript,
+the landing page keeps its own hero styling. Every page, including the mounted
+catalog and demos, renders one shared `SiteHeader` (`site_header.templ`) and
+reads the same `gothui_theme` cookie, which defaults to dark. Catalogs and demos
+share GothUI’s example handler through `site.HandlerWithOptions`. All assets are embedded. No Node, npm, JavaScript,
 external fonts, tracking, database, or runtime downloads are required to build or
 serve it. The test-only browser suite is separate from the shipped application.
 

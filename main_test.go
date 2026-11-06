@@ -139,15 +139,12 @@ func TestThemeBehindPublicTLSProxy(t *testing.T) {
 func TestPagesUseVersionedStylesheets(t *testing.T) {
 	h := handler()
 	pattern := regexp.MustCompile(`rel="stylesheet" href="([^"]+)"`)
-	versioned := regexp.MustCompile(`^/assets/(site|docs|gothui)-[a-f0-9]{64}\.css$`)
+	versioned := regexp.MustCompile(`^/assets/(site|docs|gothui|header)-[a-f0-9]{64}\.css$`)
 	for _, path := range []string{"/", "/docs", "/docs/install"} {
 		page := httptest.NewRecorder()
 		h.ServeHTTP(page, httptest.NewRequest("GET", path, nil))
 		styles := pattern.FindAllStringSubmatch(page.Body.String(), -1)
-		expected := 2
-		if path == "/" {
-			expected = 1
-		}
+		expected := 3 // Library, shared header, then page styles.
 		if len(styles) != expected {
 			t.Fatalf("%s: expected %d stylesheets, got %d", path, expected, len(styles))
 		}
@@ -188,7 +185,7 @@ func TestPreparedBrandAssets(t *testing.T) {
 	}
 	page := httptest.NewRecorder()
 	h.ServeHTTP(page, httptest.NewRequest("GET", "/", nil))
-	for _, expected := range []string{"Good interfaces. Pure Go.</span>", brandURL("mascot.svg"), "https://gothui.com" + brandURL("og-image.png")} {
+	for _, expected := range []string{"Good interfaces.<br><span>Pure Go.</span></h1>", brandURL("mascot.svg"), "https://gothui.com" + brandURL("og-image.png")} {
 		if !strings.Contains(page.Body.String(), expected) {
 			t.Errorf("missing brand reference %s", expected)
 		}

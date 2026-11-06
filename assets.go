@@ -15,6 +15,7 @@ func assetURL(name, source string) string {
 
 var siteStylesheetURL = assetURL("site", "static/site.css")
 var docsStylesheetURL = assetURL("docs", "static/docs.css")
+var headerStylesheetURL = assetURL("header", "static/header.css")
 var libraryStylesheetURL = assetURL("gothui", "library-version.json")
 
 // Resolve artwork references before hashing CSS or HTML so a brand update also
