@@ -25,6 +25,35 @@ templ ExampleAppShell() {
 
 // catalog:end
 
+// catalog:SiteHeader
+templ ExampleSiteHeader() {
+	@components.SiteHeader(components.SiteHeaderProps{
+		Brand:      exampleSiteHeaderBrand(),
+		BrandLabel: "Studio home",
+		BrandHref:  "/catalog",
+		Items: []components.SiteHeaderItem{
+			{Label: "Docs", Href: "/catalog"},
+			{Label: "Components", Href: "/catalog/siteheader", Current: true},
+			{Label: "Examples", Href: "/dashboard", AllLabel: "All examples", Groups: []components.NavGroup{
+				{Title: "Layouts", Items: []components.NavItem{{Label: "Dashboard", Href: "/dashboard"}, {Label: "Workspace", Href: "/workspace"}}},
+				{Title: "Forms", Items: []components.NavItem{{Label: "Form lab", Href: "/forms"}, {Label: "Form wizard", Href: "/wizard"}}},
+			}},
+			{Label: "Playground", Href: "/playground"},
+		},
+		Actions: components.ThemeToggle(components.ThemeToggleProps{IconOnly: true}),
+	})
+	<main id="main">
+		<p>One sticky header for every page. Narrow the window to see the compact menu.</p>
+		<a href="/catalog/siteheader">Back to SiteHeader</a>
+	</main>
+}
+
+templ exampleSiteHeaderBrand() {
+	<span>Studio</span>
+}
+
+// catalog:end
+
 // catalog:Grid
 templ ExampleGrid() {
 	@components.Grid(components.GridProps{}) {

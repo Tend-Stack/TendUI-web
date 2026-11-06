@@ -465,7 +465,7 @@ hidden from assistive technology. Explore `/catalog/icon` and the
 
 ## Searchable component catalog
 
-Open `/catalog` to browse all 36 public templ components by name, category or
+Open `/catalog` to browse all 37 public templ components by name, category or
 usage notes. Each entry provides a preview, guidance and a downloadable `.templ`
 recipe drawn from the same source compiled for that preview. Layouts open as
 standalone pages to preserve document landmarks. Search and pagination use Go

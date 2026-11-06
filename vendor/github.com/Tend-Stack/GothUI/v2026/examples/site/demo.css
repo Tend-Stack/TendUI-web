@@ -16,23 +16,8 @@
  .catalog-filters { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* Compact navigation keeps demos discoverable without a wall of links. */
-.demo-header { display: flex; align-items: center; flex-wrap: wrap; gap: .75rem 2rem; inline-size: min(100% - 2rem, 1920px); padding-block: .75rem; }
-.demo-header + main { --gothui-heading-1: clamp(1.8rem, 3vw, 2.6rem); --gothui-heading-2: clamp(1.35rem, 2vw, 1.75rem); padding-block-start: 1.5rem; }
-.demo-brand { display: inline-flex; align-items: center; gap: .6rem; color: var(--gothui-text); text-decoration: none; font-size: 1.2rem; font-weight: 650; }
-.demo-brand img { flex: none; }
-.demo-primary { margin-inline-start: auto; gap: .5rem; }
-.demo-primary > a, .demo-menu > summary { padding: .55rem .8rem; border-radius: var(--gothui-radius); text-decoration: none; font-weight: 500; }
-.demo-primary a[aria-current="page"] { background: var(--gothui-subtle); color: var(--gothui-text); }
-.demo-menu { position: relative; margin: 0; padding: 0; border: 0; }
-.demo-menu > summary { margin: 0; }
-.demo-menu-panel { position: absolute; inset-block-start: calc(100% + .75rem); inset-inline-end: 0; z-index: 5; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; inline-size: min(48rem, 85vw); padding: 1.5rem; background: var(--gothui-surface); border: 1px solid var(--gothui-border); border-radius: var(--gothui-radius); box-shadow: var(--gothui-shadow); }
-.demo-menu-panel p { font-size: .8rem; color: var(--gothui-muted); margin-block-end: .65rem; }
-.demo-menu-panel ul { display: block; }
-.demo-menu-panel a { display: block; padding: .55rem; border-radius: var(--gothui-radius); text-decoration: none; font-size: .9rem; }
-.demo-menu-panel a:hover { background: var(--gothui-subtle); }
-.demo-theme form { margin: 0; }
-.demo-theme button { font-size: .85rem; }
+/* Demo pages use SiteHeader; this only tunes the first heading after it. */
+.site-header + main { --gothui-heading-1: clamp(1.8rem, 3vw, 2.6rem); --gothui-heading-2: clamp(1.35rem, 2vw, 1.75rem); padding-block-start: 1.5rem; }
 .catalog-card h2 { font-weight: 600; }
 .catalog-card h2 a { text-decoration: none; }
 .catalog-card h2 a:hover { text-decoration: underline; }
@@ -48,10 +33,5 @@
 .playground-preview { scroll-margin-block-start: 1.5rem; }
 @media (max-width: 60rem) {
  .playground-layout { grid-template-columns: minmax(0, 1fr); }
- .demo-header { gap: 1rem; }
- .demo-primary { order: 3; flex: 1 0 100%; margin: 0; justify-content: start; }
- .demo-theme { margin-inline-start: auto; }
- .demo-menu { position: static; }
- .demo-menu-panel { position: static; inline-size: 100%; grid-template-columns: minmax(0, 1fr); box-shadow: none; margin-block-start: .75rem; }
 }
-@media print { .demo-primary, .demo-theme, .playground-jumps, .playground-scenarios { display: none; } }
+@media print { .playground-jumps, .playground-scenarios { display: none; } }

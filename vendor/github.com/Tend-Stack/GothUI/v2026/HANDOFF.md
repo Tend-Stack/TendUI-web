@@ -7,7 +7,7 @@ The standalone website lives at https://github.com/Tend-Stack/GothUI-Web.
 ## Current implementation
 
 - Embedded CSS; no Node/npm, CDN, external fonts, or bundled JavaScript.
-- 36 templ components, 24 inline SVG icons, and 13 demo areas.
+- 37 templ components, 24 inline SVG icons, and 13 demo areas.
 - Light/dark/system appearance, color presets, density, typography, widths,
   elevation, and bounded CSS motion with reduced-motion support.
 - Native form workflows and optional HTMX attributes; applications supply

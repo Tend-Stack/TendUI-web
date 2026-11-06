@@ -35,6 +35,12 @@ func theme(r *http.Request) components.Theme {
 	if err == nil && cookie.Value == string(components.ThemeDark) {
 		return components.ThemeDark
 	}
+	if err == nil && cookie.Value == string(components.ThemeLight) {
+		return components.ThemeLight
+	}
+	if fallback := siteOptions(r.Context()).DefaultTheme; fallback != "" {
+		return fallback
+	}
 	return components.ThemeLight
 }
 
@@ -152,6 +158,14 @@ func newHandler() http.Handler {
 	return http.NewCrossOriginProtection().Handler(mux)
 }
 
+func returnPath(r *http.Request, path string) bool {
+	if demoPath(path) {
+		return true
+	}
+	host := siteOptions(r.Context()).HostPage
+	return host != nil && host(path)
+}
+
 func demoPath(path string) bool {
 	switch path {
 	case "/", "/playground", "/forms", "/dashboard", "/settings", "/workspace", "/interactions", "/editing", "/motion", "/patterns", "/wizard", "/catalog", "/uploads":
@@ -189,7 +203,7 @@ func sameOriginDemoURL(r *http.Request, value string) *url.URL {
 	if r.TLS != nil {
 		scheme = "https"
 	}
-	if err != nil || u.User != nil || u.Host != r.Host || u.Scheme != scheme || !demoPath(u.Path) {
+	if err != nil || u.User != nil || u.Host != r.Host || u.Scheme != scheme || !returnPath(r, u.Path) {
 		return nil
 	}
 	return u

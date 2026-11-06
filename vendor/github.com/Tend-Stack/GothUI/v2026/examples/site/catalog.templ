@@ -95,4 +95,7 @@ templ catalogPreviewPage(e catalogEntry) {
 
 templ demoHead() {
 	<link rel="stylesheet" href={ templ.URL(demoStylePath) }/>
+	if head := siteOptions(ctx).Head; head != nil {
+		@head
+	}
 }

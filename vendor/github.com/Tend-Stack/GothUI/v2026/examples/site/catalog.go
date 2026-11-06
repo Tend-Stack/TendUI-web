@@ -22,13 +22,16 @@ type catalogEntry struct {
 	Example                              func() templ.Component
 }
 
-func (e catalogEntry) ID() string       { return strings.ToLower(e.Name) }
-func (e catalogEntry) URL() string      { return "/catalog/" + e.ID() }
-func (e catalogEntry) Standalone() bool { return e.Name == "Layout" || e.Name == "AppShell" }
+func (e catalogEntry) ID() string  { return strings.ToLower(e.Name) }
+func (e catalogEntry) URL() string { return "/catalog/" + e.ID() }
+func (e catalogEntry) Standalone() bool {
+	return e.Name == "Layout" || e.Name == "AppShell" || e.Name == "SiteHeader"
+}
 
 var catalogEntries = []catalogEntry{
 	{"Layout", "Layout", "A complete HTML document with embedded CSS and theme attributes.", "Use once per document. Pass the body component and optional trusted Head metadata. Appearance controls tokens; the application owns its preferences.", "/settings", ExampleLayout},
 	{"AppShell", "Layout", "An application header, sidebar and main landmark.", "Place inside Layout and do not nest shells or main landmarks. Navigation uses a native disclosure; Actions and Footer accept components.", "/workspace", ExampleAppShell},
+	{"SiteHeader", "Navigation", "A sticky site-wide bar with brand, links, a grouped menu and actions.", "Use one per page, above main. Menus are native details elements, so they work without scripts; on narrow screens links move into a full-width sheet. Mark the current section with Current; Section adds contextual links to the compact menu.", "/catalog", ExampleSiteHeader},
 	{"Grid", "Layout", "Responsive columns that preserve document order.", "Place block-level content in its children. Columns stack as available space narrows; no JavaScript measures the viewport.", "/playground", ExampleGrid},
 	{"Stack", "Layout", "Vertical rhythm with a density-aware gap.", "Owns direct children's block margins. A plain div, not a landmark or list; keep semantic sections and labels in the children. Align defaults to stretch.", "/patterns?section=composition", ExampleStack},
 	{"Cluster", "Layout", "Wrapping action rows with typed spacing and alignment.", "Preserves document and focus order. Each line wraps naturally; JustifyBetween distributes spare space within each line. Use native links and submit buttons for actions.", "/patterns?section=composition", ExampleCluster},
@@ -157,8 +160,8 @@ func serveCatalog(w http.ResponseWriter, r *http.Request) {
 			if err := render.HTML(w, r, http.StatusOK, e.Example(), nil); err != nil {
 				log.Printf("catalog preview: %v", err)
 			}
-		} else if e.Name == "AppShell" {
-			renderPage(w, r, "AppShell preview · GothUI", e.Example(), http.StatusOK)
+		} else if e.Name == "AppShell" || e.Name == "SiteHeader" {
+			renderPage(w, r, e.Name+" preview · GothUI", e.Example(), http.StatusOK)
 		} else {
 			renderPage(w, r, e.Name+" preview · GothUI", catalogPreviewPage(e), http.StatusOK)
 		}
