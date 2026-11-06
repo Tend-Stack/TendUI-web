@@ -72,6 +72,12 @@
       "source": "02_mascot_icons/android-chrome-512x512.png",
       "bytes": 43943,
       "processing": "Copied unchanged"
+    },
+    {
+      "file": "site_header.templ (inline site-source-icon)",
+      "source": "https://github.com/primer/octicons/blob/main/icons/mark-github-16.svg",
+      "license": "MIT; docs/licenses/octicons.txt",
+      "processing": "Original path; currentColor and decorative accessible attributes"
     }
   ]
 }

@@ -1,0 +1,41 @@
+{{define "body"}}
+<h2>Two files. Any HTML stack.</h2>
+<p>TendUI's stylesheet works with static HTML, server templates and existing applications. Go and templ are optional. No Node.js, npm, JavaScript or CSS compilation is needed.</p>
+<h2>1. Download the files</h2>
+<p><a href="/quickstart/index.html" download="index.html">Download index.html</a> and <a href="/quickstart/tendui.css" download="tendui.css">download tendui.css</a>. Save both in the same folder, then open <code>index.html</code> in your browser.</p>
+<p>These downloads use the website's pinned <code>v2026.2.0-preview.1</code> library. For a permanent version reference, use the <a href="https://github.com/Tend-Stack/TendUI/tree/v2026.2.0-preview.1">tagged source</a>. Retain the library's MIT copyright and permission notice when redistributing it.</p>
+<p><a href="/quickstart/index.html">Open the live plain-HTML example →</a></p>
+<h2>2. Use semantic HTML</h2>
+<pre tabindex="0" aria-label="Plain HTML example"><code>&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot; data-theme=&quot;light&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;utf-8&quot;&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;meta name=&quot;color-scheme&quot; content=&quot;light dark&quot;&gt;
+  &lt;title&gt;TendUI with plain HTML&lt;/title&gt;
+  &lt;link rel=&quot;stylesheet&quot; href=&quot;./tendui.css&quot;&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;main&gt;
+    &lt;h1&gt;Hello, semantic HTML.&lt;/h1&gt;
+    &lt;p&gt;No Go runtime, templ generator, Node.js, or JavaScript is needed for this page.&lt;/p&gt;
+    &lt;article&gt;
+      &lt;header&gt;&lt;h2&gt;A card is an article&lt;/h2&gt;&lt;/header&gt;
+      &lt;p&gt;The stylesheet gives ordinary HTML a consistent appearance.&lt;/p&gt;
+      &lt;label for=&quot;name&quot;&gt;Try a text field&lt;/label&gt;
+      &lt;input id=&quot;name&quot; name=&quot;name&quot; placeholder=&quot;Your name&quot; autocomplete=&quot;name&quot;&gt;
+      &lt;details&gt;
+        &lt;summary&gt;Does this work without JavaScript?&lt;/summary&gt;
+        &lt;p&gt;Yes. The browser opens this disclosure using native HTML.&lt;/p&gt;
+      &lt;/details&gt;
+      &lt;footer&gt;&lt;a href=&quot;https://tendui.com/docs&quot;&gt;Explore the documentation&lt;/a&gt;&lt;/footer&gt;
+    &lt;/article&gt;
+  &lt;/main&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h2>3. Make it yours</h2>
+<p>Change <code>data-theme="light"</code> to <code>dark</code>, or omit it to follow the system preference. Serve the two files with any static web host, or copy the stylesheet into your existing application's assets.</p>
+<p>The text field and disclosure use native browser behavior. Your application supplies form handlers, authentication and persistence. Optional HTMX requires a runtime that you supply.</p>
+<p>For typed components and CSS embedded into a single Go binary, follow the <a href="/docs/install">Go and templ quickstart</a>.</p>
+{{end}}

@@ -1,5 +1,5 @@
-github.com/Tend-Stack/TendUI/v2026 v2026.1.1-0.20261106181325-ede5aa9f4356 h1:GWQd3atUrkN+9TLZzx/57LAAlePXIQP7AbkbT0fYCec=
-github.com/Tend-Stack/TendUI/v2026 v2026.1.1-0.20261106181325-ede5aa9f4356/go.mod h1:zkQFMTpvYR8YsMHiBLfDg8KJdR7Mr9o0Py6y+h7jpws=
+github.com/Tend-Stack/TendUI/v2026 v2026.2.0-preview.1 h1:aH/H99SrUXtak5SJZNSbISlsYJ8YitGOOQESjQulMr0=
+github.com/Tend-Stack/TendUI/v2026 v2026.2.0-preview.1/go.mod h1:zkQFMTpvYR8YsMHiBLfDg8KJdR7Mr9o0Py6y+h7jpws=
 github.com/a-h/templ v0.3.1100 h1:lQhjVs1IL+M6QWUvojaFBd21+kzwATppSyWkWB9oHoM=
 github.com/a-h/templ v0.3.1100/go.mod h1:j1WAOR7749mlo1AxFLQ7qbDFW5VwyoqszRTlKqEHN9M=
 github.com/google/go-cmp v0.7.0 h1:wk8382ETsv4JYUZwIsn6YpYiWiBsYLSJiTsyBybVuN8=
