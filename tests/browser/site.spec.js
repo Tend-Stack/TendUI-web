@@ -114,7 +114,7 @@ test('brand artwork, grouped demo menu, scenarios and example headings', async (
   await page.goto('/playground');
   await page.getByRole('navigation', { name: 'Try a scenario' }).getByRole('link', { name: 'Disabled controls' }).click();
   await expect(page.getByLabel('Example text field', { exact: true })).toBeDisabled();
-  await page.getByLabel('Control state', { exact: true }).selectOption('normal');
+  await page.getByRole('combobox', { name: /^Control state/ }).selectOption('normal');
   await page.getByRole('button', { name: 'Apply and preview' }).click();
   await expect(page.getByLabel('Example text field', { exact: true })).toBeEnabled();
 });
