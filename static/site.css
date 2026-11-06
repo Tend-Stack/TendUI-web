@@ -28,7 +28,7 @@ button, a, summary { -webkit-tap-highlight-color: transparent; }
 .brand { display: inline-flex; align-items: center; gap: .7rem; font-size: 1.3rem; font-weight: 750; text-decoration: none; letter-spacing: -.04em; }
 .brand img { display: block; flex: none; inline-size: 48px; block-size: 48px; }
 .brand-copy { display: grid; gap: .2rem; }
-.brand-name { font-size: 1.75rem; line-height: 1; }
+.brand-name { font-size: 1.4rem; line-height: 1; }
 .brand-name > span { color: var(--accent); }
 .brand-tagline { color: var(--muted); font-size: .75rem; font-weight: 450; line-height: 1.4; letter-spacing: 0; }
 .edition, .preview-label, .preview-index, figcaption, .sample-kicker, .principle-number, .binary-label { font-family: ui-monospace, "SFMono-Regular", Consolas, monospace; font-size: .7rem; letter-spacing: .08em; }
@@ -39,7 +39,7 @@ button, a, summary { -webkit-tap-highlight-color: transparent; }
 .hero-copy { min-width: 0; }
 .eyebrow { display: flex; align-items: center; gap: .6rem; margin: 0 0 1.75rem; font-size: .78rem; color: var(--muted); }
 .status-dot { width: .45rem; height: .45rem; border-radius: 50%; background: #bce0cc; box-shadow: 0 0 0 4px #bce0cc12; }
-h1 { margin: 0; font-size: clamp(3rem, 4.8vw, 4.5rem); letter-spacing: -.055em; line-height: 1.08; font-weight: 650; }
+h1 { margin: 0; font-size: clamp(2.5rem, 4vw, 3.6rem); letter-spacing: -.045em; line-height: 1.1; font-weight: 650; }
 h1 span { color: var(--accent); }
 .intro { font-size: clamp(1.05rem, 1.4vw, 1.2rem); color: var(--muted); max-width: 37ch; margin: 1.65rem 0 2rem; line-height: 1.7; }
 .announcement { border-left: 2px solid var(--accent); padding-left: 1rem; margin-block: 2rem; }
@@ -86,12 +86,12 @@ footer a { text-decoration: none; }
 @media (max-width: 850px) {
   .hero { gap: 2rem; }
   .edition { display: none; }
-  h1 { font-size: clamp(2.9rem, 6.2vw, 4.8rem); }
+  h1 { font-size: clamp(2.4rem, 5.2vw, 3.6rem); }
   .sample-badge { font-size: .6rem; }
 }
 @media (max-width: 650px) {
   .hero { grid-template-columns: 1fr; padding-block: 3rem; gap: 2.5rem; }
-  h1 { font-size: clamp(3.1rem, 10.5vw, 4.6rem); }
+  h1 { font-size: clamp(2.4rem, 8.8vw, 3.2rem); }
   .showcase { max-width: 30rem; width: 100%; }
   .preview-canvas { padding: 1.6rem; }
   .sample-card { padding: 1.7rem; }
