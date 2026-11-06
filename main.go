@@ -76,6 +76,11 @@ func handler() http.Handler {
 	demos := site.HandlerWithOptions(demoOptions())
 	registerDocs(mux)
 	libraryAssets := tendui.AssetHandler()
+	mux.HandleFunc("/quickstart/tendui.css", func(w http.ResponseWriter, r *http.Request) {
+		clone := r.Clone(r.Context())
+		clone.URL.Path = tendui.StylesheetURL
+		libraryAssets.ServeHTTP(w, clone)
+	})
 	mux.HandleFunc(libraryStylesheetURL, func(w http.ResponseWriter, r *http.Request) {
 		clone := r.Clone(r.Context())
 		clone.URL.Path = tendui.StylesheetURL
@@ -99,6 +104,7 @@ func handler() http.Handler {
 		}
 	})
 	assetRoutes := []struct{ route, file, contentType string }{
+		{"/quickstart/index.html", "quickstart.html", "text/html; charset=utf-8"},
 		{"/site.css", "site.css", "text/css; charset=utf-8"},
 		{siteStylesheetURL, "site.css", "text/css; charset=utf-8"},
 		{docsStylesheetURL, "docs.css", "text/css; charset=utf-8"},

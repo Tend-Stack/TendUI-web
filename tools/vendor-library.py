@@ -30,7 +30,7 @@ if git("status", "--porcelain").strip():
 revision = git("rev-parse", "HEAD").decode().strip()
 stamp = datetime.datetime.fromtimestamp(int(git("show", "-s", "--format=%ct", "HEAD")), datetime.timezone.utc)
 tags = git("tag", "--points-at", "HEAD").decode().splitlines()
-release = next((tag for tag in tags if tag.startswith("v2026.") and "-" not in tag), None)
+release = next((tag for tag in tags if re.fullmatch(r"v2026\.[1-9][0-9]*\.[0-9]+(?:-[0-9A-Za-z.-]+)?", tag)), None)
 if release:
     version = release
 else:

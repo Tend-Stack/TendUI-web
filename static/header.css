@@ -5,3 +5,6 @@
 @media (max-width: 56rem) { .site-version { display: none; } }
 
 .site-brand > img { inline-size: 2.5rem; block-size: 2.5rem; object-fit: contain; }
+
+.site-source-link { display: inline-flex; align-items: center; gap: .5rem; }
+.site-source-icon { flex: none; inline-size: 1rem; block-size: 1rem; }

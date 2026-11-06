@@ -16,13 +16,12 @@ share TendUI’s example handler through `site.HandlerWithOptions`. All assets a
 external fonts, tracking, database, or runtime downloads are required to build or
 serve it. The test-only browser suite is separate from the shipped application.
 
-Documentation lives under `/docs`, the searchable 36-component reference under
+Documentation lives under `/docs`, the searchable 37-component reference under
 `/catalog`, application examples under `/examples`, and native state/appearance
 controls under `/playground`. The public canonical origin is https://tendui.com.
 
 The library and templ runtime are vendored at the exact revision recorded in
-`library-version.json`. Docker builds use `GOPROXY=off` and need no private-repo
-credentials. To refresh from a clean library checkout, run
+`library-version.json`. Docker builds use `GOPROXY=off` and require no module-registry access. To refresh from a clean library checkout, run
 `python3 tools/vendor-library.py /path/to/TendUI`. This uses the local Go module
 cache for already-downloaded dependencies, records a tag or exact pseudo-version,
 and removes its temporary proxy and cache. Commit the resulting module metadata,
@@ -100,3 +99,9 @@ Normal builds need only Go. Website styles use content-hashed URLs; the library
 stylesheet URL is tied to the vendored revision. This prevents cached landing-page
 CSS from being reused after a documentation deployment, even when an edge proxy
 sets a longer browser cache lifetime.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for setup, review and MIT + DCO sign-off.
+Report vulnerabilities privately using [SECURITY.md](SECURITY.md); community
+participation follows [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).

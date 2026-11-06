@@ -12,7 +12,7 @@ async function siteNavigation(page) {
 
 test('guides, examples, and homepage remain accessible and contained', async ({ page }, testInfo) => {
   test.setTimeout(180000);
-  for (const route of ['/', '/docs', '/docs/install', '/docs/theming', '/docs/forms', '/docs/htmx', '/docs/accessibility', '/docs/deploy', '/examples']) {
+  for (const route of ['/', '/docs', '/docs/install', '/docs/html', '/docs/theming', '/docs/forms', '/docs/htmx', '/docs/accessibility', '/docs/deploy', '/examples']) {
     const response = await page.goto(route);
     expect(response.status()).toBe(200);
     await expect(page.locator('main')).toHaveCount(1);
@@ -194,4 +194,22 @@ test('brand icons load on every surface and the taller mascot fits the header', 
     await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveCount(1);
     await expect(page.locator('link[rel="manifest"]')).toHaveCount(1);
   }
+});
+
+
+test('HTML onboarding downloads match the working example', async ({ browser, request }) => {
+  const guide = await request.get('/docs/html');
+  expect(guide.status()).toBe(200);
+  expect(await guide.text()).toContain('v2026.2.0-preview.2');
+  const css = await request.get('/quickstart/tendui.css');
+  expect(css.status()).toBe(200);
+  expect(await css.text()).toContain('--tendui-primary');
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto('http://127.0.0.1:8080/quickstart/index.html');
+  await expect(page.getByRole('heading', { name: 'Hello, semantic HTML.' })).toBeVisible();
+  await page.getByText('Does this work without JavaScript?', { exact: true }).click();
+  await expect(page.getByText('Yes. The browser opens this disclosure using native HTML.')).toBeVisible();
+  await expect(page.locator('script')).toHaveCount(0);
+  await context.close();
 });

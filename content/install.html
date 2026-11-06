@@ -1,54 +1,74 @@
 {{define "body"}}
-<h2>1. Add the module</h2>
-<p>Use Go 1.26 or newer. Choose a patched compiler for deployed applications. Install the TendUI development branch while the renamed release is being prepared:</p>
-<pre tabindex="0" aria-label="Install dependencies"><code>go mod init example.com/myapp
-go get github.com/Tend-Stack/TendUI/v2026@main
+<h2>1. Add the preview module</h2>
+<p>Use Go 1.26 or newer. Pin this preview version for reproducible builds:</p>
+<pre tabindex="0" aria-label="Install dependencies"><code>mkdir my-tendui-app
+cd my-tendui-app
+go mod init example.com/my-tendui-app
+go get github.com/Tend-Stack/TendUI/v2026@v2026.2.0-preview.2
 go install github.com/a-h/templ/cmd/templ@v0.3.1100</code></pre>
-<p>The repository currently requires GitHub access. For private-module downloads, configure your normal Git credentials and <code>GOPRIVATE=github.com/Tend-Stack/TendUI</code>. Never put credentials in source or import URLs.</p>
-<h2>2. Create a page</h2><p>Save this as <code>page.templ</code>. Go structs configure the component; ordinary HTML supplies the content.</p>
+<p>Using another stack? Start with <a href="/docs/html">plain HTML and CSS</a>.</p>
+<h2>2. Create a page</h2><p>Save this as <code>page.templ</code>. Go structs configure components; ordinary HTML supplies the content.</p>
 <pre tabindex="0" aria-label="Templ page example"><code>package main
 
-import "github.com/Tend-Stack/TendUI/v2026/components"
+import &quot;github.com/Tend-Stack/TendUI/v2026/components&quot;
 
 templ page() {
-    @components.Layout(components.LayoutProps{
-        Title: "My TendUI app",
-        Language: "en",
-        Theme: components.ThemeSystem,
-    }, body())
+	@components.Layout(components.LayoutProps{
+		Title:    &quot;My TendUI app&quot;,
+		Language: &quot;en&quot;,
+		Theme:    components.ThemeSystem,
+	}, body())
 }
 
 templ body() {
-    &lt;main&gt;
-        &lt;h1&gt;Hello, TendUI.&lt;/h1&gt;
-        @components.Card(components.CardProps{}) {
-            &lt;p&gt;A little less setup. A little more making.&lt;/p&gt;
-        }
-    &lt;/main&gt;
-}</code></pre>
-<h2>3. Serve the page and stylesheet</h2><p>Save this as <code>main.go</code>. The layout links the same stylesheet path served by <code>AssetHandler</code>.</p>
-<pre tabindex="0" aria-label="Go HTTP server example"><code>package main
+	&lt;main&gt;
+		&lt;h1&gt;Hello, TendUI.&lt;/h1&gt;
+		@components.Card(components.CardProps{}) {
+			&lt;p&gt;This page and its stylesheet ship in one Go binary.&lt;/p&gt;
+			&lt;details&gt;
+				&lt;summary&gt;What does the browser need?&lt;/summary&gt;
+				&lt;p&gt;Just HTML and CSS. This disclosure works without JavaScript.&lt;/p&gt;
+			&lt;/details&gt;
+		}
+	&lt;/main&gt;
+}
+</code></pre>
+<h2>3. Serve the page and stylesheet</h2><p>Save this as <code>main.go</code>.</p>
+<pre tabindex="0" aria-label="Go HTTP server example"><code>// A complete TendUI application. The generated page and CSS ship in its binary.
+package main
 
 import (
-    "log"
-    "net/http"
-    "time"
+	&quot;log&quot;
+	&quot;net/http&quot;
+	&quot;time&quot;
 
-    "github.com/Tend-Stack/TendUI/v2026"
-    "github.com/a-h/templ"
+	&quot;github.com/Tend-Stack/TendUI/v2026&quot;
+	&quot;github.com/a-h/templ&quot;
 )
 
+func handler() http.Handler {
+	mux := http.NewServeMux()
+	mux.Handle(tendui.AssetPath, tendui.AssetHandler())
+	mux.Handle(&quot;GET /{$}&quot;, templ.Handler(page()))
+	return mux
+}
+
 func main() {
-    mux := http.NewServeMux()
-    mux.Handle(tendui.AssetPath, tendui.AssetHandler())
-    mux.Handle("GET /{$}", templ.Handler(page()))
-    server := &amp;http.Server{
-        Addr: ":8080", Handler: mux,
-        ReadHeaderTimeout: 5 * time.Second,
-    }
-    log.Fatal(server.ListenAndServe())
-}</code></pre>
-<h2>4. Generate and run</h2><pre tabindex="0" aria-label="Generate and run commands"><code>templ generate
-go run .</code></pre><p>Open <code>http://localhost:8080</code>. To ship the app, run <code>go build</code>. Your generated Go and embedded CSS become one executable.</p>
-<h2>Versioning</h2><p>Releases use <code>YEAR.RELEASE.FIX</code>, using tags such as <code>v2026.2.0</code>. Existing pre-rename tags retain their original module path; use <code>@main</code> for TendUI until its first renamed release. The module suffix <code>/v2026</code> follows Go’s major-version rules. Fixes on this line retain the suffix.</p>
+	server := &amp;http.Server{
+		Addr: &quot;127.0.0.1:8080&quot;, Handler: handler(),
+		ReadHeaderTimeout: 5 * time.Second,
+	}
+	log.Fatal(server.ListenAndServe())
+}
+</code></pre>
+<h2>4. Generate and run</h2>
+<pre tabindex="0" aria-label="Generate and run commands"><code>templ generate
+go run .</code></pre>
+<p>Open <code>http://127.0.0.1:8080</code>. If <code>templ</code> is not on your PATH, use the executable in <code>$(go env GOPATH)/bin/templ</code>. The generator is needed when authoring your own templ pages; the library includes its generated Go.</p>
+<h2>5. Ship one binary</h2>
+<pre tabindex="0"><code>go build -o my-tendui-app .</code></pre>
+<p>Your generated page and TendUI stylesheet are compiled into the executable using Go's native embedding. No runtime asset directory, Node.js, npm or bundled JavaScript is needed. Add application-specific storage, routing and production server configuration as required.</p>
+<p>This is the <a href="https://github.com/Tend-Stack/TendUI/tree/v2026.2.0-preview.2/examples/quickstart">tested quickstart in the preview source</a>.</p>
+<h2>Versioning</h2>
+<p>Releases use <code>YEAR.RELEASE.FIX</code>. This prerelease is <code>v2026.2.0-preview.2</code>; API changes remain possible before stable release. The <code>/v2026</code> module suffix follows Go's major-version rules. Historical pre-rename tags are not TendUI installation targets.</p>
 {{end}}

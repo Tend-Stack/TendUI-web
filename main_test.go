@@ -84,7 +84,7 @@ func TestProxyPreservesCodeAndCachePolicy(t *testing.T) {
 					t.Errorf("%s: lost cache policy", path)
 				}
 			}
-			if method == "GET" && path == "/docs/install" && !strings.Contains(w.Body.String(), "TendUI/v2026@main") {
+			if method == "GET" && path == "/docs/install" && !strings.Contains(w.Body.String(), "TendUI/v2026@v2026.2.0-preview.2") {
 				t.Fatal("release installation command missing")
 			}
 		}
