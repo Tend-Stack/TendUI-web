@@ -104,6 +104,8 @@ func handler() http.Handler {
 		{docsStylesheetURL, "docs.css", "text/css; charset=utf-8"},
 		{headerStylesheetURL, "header.css", "text/css; charset=utf-8"},
 		{"/favicon.svg", "brand/favicon.svg", "image/svg+xml"},
+		{"/favicon.ico", "brand/favicon.ico", "image/vnd.microsoft.icon"},
+		{"/apple-touch-icon.png", "brand/apple-touch-icon.png", "image/png"},
 		{"/robots.txt", "robots.txt", "text/plain; charset=utf-8"},
 	}
 	for _, asset := range brandAssets {
@@ -122,6 +124,24 @@ func handler() http.Handler {
 			http.ServeContent(w, r, asset.file, time.Time{}, bytes.NewReader(data))
 		})
 	}
+	mux.HandleFunc("/site.webmanifest", func(w http.ResponseWriter, r *http.Request) {
+		if !readMethod(w, r) {
+			return
+		}
+		w.Header().Set("Content-Type", "application/manifest+json")
+		w.Header().Set("Cache-Control", "public, max-age=0, must-revalidate")
+		if r.Method != http.MethodHead {
+			_ = json.NewEncoder(w).Encode(map[string]any{
+				"name": "Tend UI", "short_name": "Tend UI",
+				"start_url": "/", "scope": "/", "display": "browser",
+				"background_color": "#0B0A18", "theme_color": "#0B0A18",
+				"icons": []map[string]string{
+					{"src": brandURL("android-chrome-192x192.png"), "sizes": "192x192", "type": "image/png"},
+					{"src": brandURL("android-chrome-512x512.png"), "sizes": "512x512", "type": "image/png"},
+				},
+			})
+		}
+	})
 	landing := renderLanding()
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path != "/" {
@@ -149,7 +169,7 @@ func handler() http.Handler {
 		}
 	})
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Security-Policy", "default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'")
+		w.Header().Set("Content-Security-Policy", "default-src 'none'; style-src 'self'; img-src 'self'; manifest-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'")
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("Referrer-Policy", "strict-origin-when-cross-origin")
 		w.Header().Set("Permissions-Policy", "camera=(), microphone=(), geolocation=()")

@@ -25,9 +25,8 @@ templ landingPage(theme string) {
 			<meta property="og:image:alt" content="TendUI gopher — Beautiful interfaces. No build pipeline."/>
 			<meta name="twitter:card" content="summary_large_image"/>
 			<link rel="canonical" href="https://tendui.com/"/>
-			<link rel="icon" href={ templ.SafeURL(brandURL("favicon.svg")) } type="image/svg+xml"/>
 			<link rel="stylesheet" href={ templ.SafeURL(libraryStylesheetURL) }/>
-			@headerStylesheet()
+			@siteHead()
 			<link rel="stylesheet" href={ templ.SafeURL(siteStylesheetURL) }/>
 		</head>
 		<body>

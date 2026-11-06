@@ -21,9 +21,8 @@ templ documentationPage(g guide, navigation, section []components.NavItem, theme
             <meta property="og:image" content={ "https://tendui.com" + brandURL("og-image.png") }/>
             <meta name="twitter:card" content="summary_large_image"/>
             <link rel="canonical" href={ templ.SafeURL("https://tendui.com" + g.Path) }/>
-            <link rel="icon" href={ templ.SafeURL(brandURL("favicon.svg")) } type="image/svg+xml"/>
             <link rel="stylesheet" href={ templ.SafeURL(libraryStylesheetURL) }/>
-            @headerStylesheet()
+            @siteHead()
             <link rel="stylesheet" href={ templ.SafeURL(docsStylesheetURL) }/>
         </head>
         <body>

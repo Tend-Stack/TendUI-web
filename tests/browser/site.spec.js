@@ -171,3 +171,27 @@ test('one header on every surface', async ({ page }, testInfo) => {
     }
   }
 });
+
+
+test('brand icons load on every surface and the taller mascot fits the header', async ({ page, request }) => {
+  for (const route of ['/', '/docs', '/catalog', '/playground']) {
+    await page.goto(route);
+    const icons = page.locator('link[rel="icon"]');
+    await expect(icons).toHaveCount(3);
+    for (const href of await icons.evaluateAll(nodes => nodes.map(n => n.href))) {
+      const response = await request.get(href);
+      expect(response.status()).toBe(200);
+      expect(response.headers()['content-type']).toMatch(/^image\//);
+    }
+    const logo = page.locator('.site-brand > img');
+    expect(await logo.evaluate(e => e.complete && e.naturalWidth > 0)).toBe(true);
+    const box = await logo.boundingBox();
+    const header = await page.locator('.site-header').boundingBox();
+    const rootSize = await page.locator('html').evaluate(e => parseFloat(getComputedStyle(e).fontSize));
+    expect(box.height).toBeCloseTo(rootSize * 2.5, 0);
+    expect(box.y).toBeGreaterThanOrEqual(header.y);
+    expect(box.y + box.height).toBeLessThanOrEqual(header.y + header.height);
+    await expect(page.locator('link[rel="apple-touch-icon"]')).toHaveCount(1);
+    await expect(page.locator('link[rel="manifest"]')).toHaveCount(1);
+  }
+});
