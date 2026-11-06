@@ -11,7 +11,7 @@ test('guides, examples, and homepage remain accessible and contained', async ({ 
     await expect(page.locator('script')).toHaveCount(0);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), route).toBe(true);
     const audit = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
-    expect(audit.violations.map(v => ({ id: v.id, targets: v.nodes.map(n => n.target) })), route).toEqual([]);
+    expect.soft(audit.violations.map(v => ({ id: v.id, targets: v.nodes.map(n => n.target) })), route).toEqual([]);
   }
   await page.goto('/');
   await page.screenshot({ path: testInfo.outputPath('homepage.png'), fullPage: true });
