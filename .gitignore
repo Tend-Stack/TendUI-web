@@ -1,0 +1,3 @@
+/tests/results/*
+!/tests/results/.gitkeep
+/gothui-web

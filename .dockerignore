@@ -1,0 +1,6 @@
+.git
+.github
+tests
+gothui-web
+*_test.go
+README.md
