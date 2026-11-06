@@ -1,4 +1,4 @@
-# github.com/Tend-Stack/TendUI/v2026 v2026.2.0-preview.1
+# github.com/Tend-Stack/TendUI/v2026 v2026.2.0-preview.2
 ## explicit; go 1.26.0
 github.com/Tend-Stack/TendUI/v2026
 github.com/Tend-Stack/TendUI/v2026/components

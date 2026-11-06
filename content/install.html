@@ -4,7 +4,7 @@
 <pre tabindex="0" aria-label="Install dependencies"><code>mkdir my-tendui-app
 cd my-tendui-app
 go mod init example.com/my-tendui-app
-go get github.com/Tend-Stack/TendUI/v2026@v2026.2.0-preview.1
+go get github.com/Tend-Stack/TendUI/v2026@v2026.2.0-preview.2
 go install github.com/a-h/templ/cmd/templ@v0.3.1100</code></pre>
 <p>Using another stack? Start with <a href="/docs/html">plain HTML and CSS</a>.</p>
 <h2>2. Create a page</h2><p>Save this as <code>page.templ</code>. Go structs configure components; ordinary HTML supplies the content.</p>
@@ -68,7 +68,7 @@ go run .</code></pre>
 <h2>5. Ship one binary</h2>
 <pre tabindex="0"><code>go build -o my-tendui-app .</code></pre>
 <p>Your generated page and TendUI stylesheet are compiled into the executable using Go's native embedding. No runtime asset directory, Node.js, npm or bundled JavaScript is needed. Add application-specific storage, routing and production server configuration as required.</p>
-<p>This is the <a href="https://github.com/Tend-Stack/TendUI/tree/v2026.2.0-preview.1/examples/quickstart">tested quickstart in the preview source</a>.</p>
+<p>This is the <a href="https://github.com/Tend-Stack/TendUI/tree/v2026.2.0-preview.2/examples/quickstart">tested quickstart in the preview source</a>.</p>
 <h2>Versioning</h2>
-<p>Releases use <code>YEAR.RELEASE.FIX</code>. This prerelease is <code>v2026.2.0-preview.1</code>; API changes remain possible before stable release. The <code>/v2026</code> module suffix follows Go's major-version rules. Historical pre-rename tags are not TendUI installation targets.</p>
+<p>Releases use <code>YEAR.RELEASE.FIX</code>. This prerelease is <code>v2026.2.0-preview.2</code>; API changes remain possible before stable release. The <code>/v2026</code> module suffix follows Go's major-version rules. Historical pre-rename tags are not TendUI installation targets.</p>
 {{end}}

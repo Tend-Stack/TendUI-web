@@ -200,7 +200,7 @@ test('brand icons load on every surface and the taller mascot fits the header', 
 test('HTML onboarding downloads match the working example', async ({ browser, request }) => {
   const guide = await request.get('/docs/html');
   expect(guide.status()).toBe(200);
-  expect(await guide.text()).toContain('v2026.2.0-preview.1');
+  expect(await guide.text()).toContain('v2026.2.0-preview.2');
   const css = await request.get('/quickstart/tendui.css');
   expect(css.status()).toBe(200);
   expect(await css.text()).toContain('--tendui-primary');
