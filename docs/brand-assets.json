@@ -42,6 +42,36 @@
       "source": "03_web_and_social/github-social-preview-1280x640.png",
       "bytes": 649151,
       "processing": "Copied unchanged"
+    },
+    {
+      "file": "static/brand/favicon.ico",
+      "source": "02_mascot_icons/favicon.ico",
+      "bytes": 53609,
+      "processing": "Copied unchanged"
+    },
+    {
+      "file": "static/brand/favicon-32.png",
+      "source": "02_mascot_icons/favicon-32.png",
+      "bytes": 2171,
+      "processing": "Copied unchanged"
+    },
+    {
+      "file": "static/brand/apple-touch-icon.png",
+      "source": "02_mascot_icons/apple-touch-icon.png",
+      "bytes": 14656,
+      "processing": "Copied unchanged"
+    },
+    {
+      "file": "static/brand/android-chrome-192x192.png",
+      "source": "02_mascot_icons/android-chrome-192x192.png",
+      "bytes": 15655,
+      "processing": "Copied unchanged"
+    },
+    {
+      "file": "static/brand/android-chrome-512x512.png",
+      "source": "02_mascot_icons/android-chrome-512x512.png",
+      "bytes": 43943,
+      "processing": "Copied unchanged"
     }
   ]
 }

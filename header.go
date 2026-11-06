@@ -75,6 +75,6 @@ func demoOptions() site.Options {
 		Header:       func(active string) templ.Component { return siteHeader(active, nil) },
 		DefaultTheme: defaultTheme,
 		HostPage:     hostPage,
-		Head:         headerStylesheet(),
+		Head:         siteHead(),
 	}
 }

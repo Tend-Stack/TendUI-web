@@ -21,9 +21,8 @@ templ documentationPage(g guide, navigation, section []components.NavItem, theme
             <meta property="og:image" content={ "https://tendui.com" + brandURL("og-image.png") }/>
             <meta name="twitter:card" content="summary_large_image"/>
             <link rel="canonical" href={ templ.SafeURL("https://tendui.com" + g.Path) }/>
-            <link rel="icon" href={ templ.SafeURL(brandURL("favicon.svg")) } type="image/svg+xml"/>
             <link rel="stylesheet" href={ templ.SafeURL(libraryStylesheetURL) }/>
-            @headerStylesheet()
+            @siteHead()
             <link rel="stylesheet" href={ templ.SafeURL(docsStylesheetURL) }/>
         </head>
         <body>
@@ -50,5 +49,5 @@ templ documentationSidebarFooter() {
     <img class="docs-mascot" src={ templ.SafeURL(brandURL("mascot-guide.svg")) } alt="" width="88" height="88" loading="lazy"/>
     <p>Go-native. HTML-first.<br/>Yours to compose.</p>
     <small>Built with TendUI · development</small>
-    <p><a href="https://github.com/Tend-Stack/TendUI-web">Website source ↗</a></p>
+    <p><a href="https://github.com/Tend-Stack/TendUI">TendUI source ↗</a></p>
 }

@@ -1,6 +1,9 @@
 package main
 
 import (
+	"bytes"
+	"encoding/json"
+	"image/png"
 	"net/http"
 	"net/http/httptest"
 	"regexp"
@@ -98,5 +101,54 @@ func TestDocsGuidesMoveIntoCompactMenu(t *testing.T) {
 	section := regexp.MustCompile(`<div class="site-sheet-section">[\s\S]*?</div>`).FindString(body)
 	if !strings.Contains(section, `<a href="/docs/install" aria-current="page">Installation</a>`) || strings.Contains(section, "/catalog") || strings.Contains(section, `"/examples"`) {
 		t.Fatalf("compact menu should list only guides: %s", section)
+	}
+}
+
+// Navigation must not lose the tab icon on pages hosted by the example handler.
+func TestSiteIconsAcrossSurfaces(t *testing.T) {
+	h := handler()
+	for _, path := range []string{"/", "/docs", "/examples", "/catalog", "/catalog/button", "/playground", "/forms"} {
+		w := httptest.NewRecorder()
+		h.ServeHTTP(w, httptest.NewRequest("GET", path, nil))
+		body := w.Body.String()
+		for _, want := range []string{brandURL("favicon.ico"), brandURL("favicon-32.png"), brandURL("favicon.svg"), brandURL("apple-touch-icon.png"), `href="/site.webmanifest"`} {
+			if strings.Count(body, want) != 1 {
+				t.Errorf("%s: expected one icon declaration for %s", path, want)
+			}
+		}
+	}
+	for _, path := range []string{"/favicon.ico", "/apple-touch-icon.png", brandURL("favicon.ico"), brandURL("favicon-32.png")} {
+		w := httptest.NewRecorder()
+		h.ServeHTTP(w, httptest.NewRequest("GET", path, nil))
+		if w.Code != 200 || w.Body.Len() == 0 {
+			t.Errorf("%s: unavailable icon (%d)", path, w.Code)
+		}
+	}
+	w := httptest.NewRecorder()
+	h.ServeHTTP(w, httptest.NewRequest("GET", "/site.webmanifest", nil))
+	var manifest struct {
+		Name  string
+		Icons []struct{ Src, Sizes string }
+	}
+	if err := json.Unmarshal(w.Body.Bytes(), &manifest); err != nil {
+		t.Fatal(err)
+	}
+	if manifest.Name != "Tend UI" || len(manifest.Icons) != 2 {
+		t.Fatalf("invalid manifest: %+v", manifest)
+	}
+	if !strings.Contains(w.Header().Get("Content-Security-Policy"), "manifest-src 'self'") {
+		t.Fatal("manifest blocked by CSP")
+	}
+	for i, icon := range manifest.Icons {
+		r := httptest.NewRecorder()
+		h.ServeHTTP(r, httptest.NewRequest("GET", icon.Src, nil))
+		config, err := png.DecodeConfig(bytes.NewReader(r.Body.Bytes()))
+		if err != nil {
+			t.Fatal(err)
+		}
+		size := []int{192, 512}[i]
+		if r.Code != 200 || config.Width != size || config.Height != size {
+			t.Errorf("invalid app icon: %+v", config)
+		}
 	}
 }

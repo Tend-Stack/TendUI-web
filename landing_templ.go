@@ -63,54 +63,41 @@ func landingPage(theme string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\"><meta property=\"og:image:width\" content=\"1200\"><meta property=\"og:image:height\" content=\"630\"><meta property=\"og:image:alt\" content=\"TendUI gopher — Beautiful interfaces. No build pipeline.\"><meta name=\"twitter:card\" content=\"summary_large_image\"><link rel=\"canonical\" href=\"https://tendui.com/\"><link rel=\"icon\" href=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\"><meta property=\"og:image:width\" content=\"1200\"><meta property=\"og:image:height\" content=\"630\"><meta property=\"og:image:alt\" content=\"TendUI gopher — Beautiful interfaces. No build pipeline.\"><meta name=\"twitter:card\" content=\"summary_large_image\"><link rel=\"canonical\" href=\"https://tendui.com/\"><link rel=\"stylesheet\" href=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var4 string
-		templ_7745c5c3_Var4, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL(brandURL("favicon.svg"))).ResolveURL(ctx)
+		templ_7745c5c3_Var4, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL(libraryStylesheetURL)).ResolveURL(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `landing.templ`, Line: 28, Col: 65}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `landing.templ`, Line: 28, Col: 68}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var4)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\" type=\"image/svg+xml\"><link rel=\"stylesheet\" href=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = siteHead().Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<link rel=\"stylesheet\" href=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 string
-		templ_7745c5c3_Var5, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL(libraryStylesheetURL)).ResolveURL(ctx)
+		templ_7745c5c3_Var5, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL(siteStylesheetURL)).ResolveURL(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `landing.templ`, Line: 29, Col: 68}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `landing.templ`, Line: 30, Col: 65}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\">")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = headerStylesheet().Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<link rel=\"stylesheet\" href=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var6 string
-		templ_7745c5c3_Var6, templ_7745c5c3_Err = templruntime.NewAttributeExpression(templ.SafeURL(siteStylesheetURL)).ResolveURL(ctx)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `landing.templ`, Line: 31, Col: 65}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\"></head><body><a class=\"skip-link\" href=\"#main\">Skip to content</a>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\"></head><body><a class=\"skip-link\" href=\"#main\">Skip to content</a>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -118,20 +105,20 @@ func landingPage(theme string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<div class=\"page\"><main id=\"main\"><section class=\"hero\" aria-labelledby=\"headline\"><div class=\"hero-copy\"><p class=\"eyebrow\"><span class=\"status-dot\" aria-hidden=\"true\"></span> PURE CSS · SEMANTIC HTML · GO</p><h1 id=\"headline\">Beautiful interfaces.<br><span>No build pipeline.</span></h1><p class=\"intro\">Pure CSS. Semantic HTML. No Node.js, no npm, no bundled JavaScript. First-class Go and templ support.</p><div class=\"announcement\"><p class=\"coming-soon\">Built for Go. Shipped in one binary.</p><p>Embed the stylesheet with Go, compose 37 typed templ components, and ship one executable. Use the same CSS with any HTML stack.</p></div><a class=\"button\" href=\"/docs/install\">Start building <span aria-hidden=\"true\">↗</span></a><p class=\"small-note\"><a href=\"/playground\">Try the playground</a> · Go 1.26+ · MIT</p></div><figure class=\"showcase\" aria-labelledby=\"showcase-caption\"><div class=\"preview-top\"><span class=\"preview-label\">THE SHAPE OF SIMPLE</span><span class=\"preview-index\">01 / UI</span></div><div class=\"preview-canvas\"><div class=\"mascot-welcome\"><img src=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<div class=\"page\"><main id=\"main\"><section class=\"hero\" aria-labelledby=\"headline\"><div class=\"hero-copy\"><p class=\"eyebrow\"><span class=\"status-dot\" aria-hidden=\"true\"></span> PURE CSS · SEMANTIC HTML · GO</p><h1 id=\"headline\">Beautiful interfaces.<br><span>No build pipeline.</span></h1><p class=\"intro\">Pure CSS. Semantic HTML. No Node.js, no npm, no bundled JavaScript. First-class Go and templ support.</p><div class=\"announcement\"><p class=\"coming-soon\">Built for Go. Shipped in one binary.</p><p>Embed the stylesheet with Go, compose 37 typed templ components, and ship one executable. Use the same CSS with any HTML stack.</p></div><a class=\"button\" href=\"/docs/install\">Start building <span aria-hidden=\"true\">↗</span></a><p class=\"small-note\"><a href=\"/playground\">Try the playground</a> · Go 1.26+ · MIT</p></div><figure class=\"showcase\" aria-labelledby=\"showcase-caption\"><div class=\"preview-top\"><span class=\"preview-label\">THE SHAPE OF SIMPLE</span><span class=\"preview-index\">01 / UI</span></div><div class=\"preview-canvas\"><div class=\"mascot-welcome\"><img src=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var7 string
-		templ_7745c5c3_Var7, templ_7745c5c3_Err = templruntime.NewAttributeExpression(brandURL("mascot.svg")).ResolveURL(ctx)
+		var templ_7745c5c3_Var6 string
+		templ_7745c5c3_Var6, templ_7745c5c3_Err = templruntime.NewAttributeExpression(brandURL("mascot.svg")).ResolveURL(ctx)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `landing.templ`, Line: 53, Col: 69}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `landing.templ`, Line: 52, Col: 69}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var7)
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\" alt=\"TendUI’s cloaked gopher holding a UI card\" width=\"144\" height=\"144\"><div><span class=\"preview-label\">A LITTLE CHARACTER.</span><p>A lot less setup.</p><span>Made for curious Go developers.</span></div></div><div class=\"sample-card\"><div class=\"sample-header\"><span class=\"sample-icon\" aria-hidden=\"true\">✳</span><span class=\"sample-badge\">Made with care</span></div><p class=\"sample-kicker\">LESS SETUP. MORE MAKING.</p><h2>A little structure.<br>A lot of possibility.</h2><p>Room to build something that feels like you.</p><div class=\"swatches\" role=\"img\" aria-label=\"A palette of violet, blue, mint, and warm neutral\"><span></span><span></span><span></span><span></span></div><details><summary>Simple by nature <span aria-hidden=\"true\">+</span></summary><p>This disclosure is native HTML. Just a browser doing what it does best.</p></details></div><div class=\"binary-label\"><span aria-hidden=\"true\">↳</span> One binary. All together.</div></div><figcaption id=\"showcase-caption\"><span>HTML + CSS + GO</span><span>An interface study</span></figcaption></figure></section><section class=\"principles\" aria-label=\"The TendUI approach\"><div><span class=\"principle-number\">01</span><h2><a href=\"/docs/install\">Go all the way.</a></h2><p>Styles embedded in your binary. No asset pipeline to maintain.</p></div><div><span class=\"principle-number\">02</span><h2><a href=\"/catalog\">Let HTML be HTML.</a></h2><p>Semantic elements, typed templ components, and native interactions.</p></div><div><span class=\"principle-number\">03</span><h2><a href=\"/docs/theming\">Make it yours.</a></h2><p>Themes, spacing, typography, and a little CSS motion. Your choices.</p></div></section></main><footer><p>TendUI <span class=\"footer-separator\" aria-hidden=\"true\">/</span> Small pieces. Considered interfaces.</p><a href=\"https://github.com/Tend-Stack/TendUI-web\">Website source <span aria-hidden=\"true\">↗</span></a></footer></div></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" alt=\"TendUI’s cloaked gopher holding a UI card\" width=\"144\" height=\"144\"><div><span class=\"preview-label\">A LITTLE CHARACTER.</span><p>A lot less setup.</p><span>Made for curious Go developers.</span></div></div><div class=\"sample-card\"><div class=\"sample-header\"><span class=\"sample-icon\" aria-hidden=\"true\">✳</span><span class=\"sample-badge\">Made with care</span></div><p class=\"sample-kicker\">LESS SETUP. MORE MAKING.</p><h2>A little structure.<br>A lot of possibility.</h2><p>Room to build something that feels like you.</p><div class=\"swatches\" role=\"img\" aria-label=\"A palette of violet, blue, mint, and warm neutral\"><span></span><span></span><span></span><span></span></div><details><summary>Simple by nature <span aria-hidden=\"true\">+</span></summary><p>This disclosure is native HTML. Just a browser doing what it does best.</p></details></div><div class=\"binary-label\"><span aria-hidden=\"true\">↳</span> One binary. All together.</div></div><figcaption id=\"showcase-caption\"><span>HTML + CSS + GO</span><span>An interface study</span></figcaption></figure></section><section class=\"principles\" aria-label=\"The TendUI approach\"><div><span class=\"principle-number\">01</span><h2><a href=\"/docs/install\">Go all the way.</a></h2><p>Styles embedded in your binary. No asset pipeline to maintain.</p></div><div><span class=\"principle-number\">02</span><h2><a href=\"/catalog\">Let HTML be HTML.</a></h2><p>Semantic elements, typed templ components, and native interactions.</p></div><div><span class=\"principle-number\">03</span><h2><a href=\"/docs/theming\">Make it yours.</a></h2><p>Themes, spacing, typography, and a little CSS motion. Your choices.</p></div></section></main><footer><p>TendUI <span class=\"footer-separator\" aria-hidden=\"true\">/</span> Small pieces. Considered interfaces.</p><a href=\"https://github.com/Tend-Stack/TendUI-web\">Website source <span aria-hidden=\"true\">↗</span></a></footer></div></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

@@ -19,7 +19,7 @@ templ siteHeader(active string, section []components.NavItem) {
 }
 
 templ siteBrand() {
-	<img src={ brandURL("mascot.svg") } alt="" width="32" height="32"/>
+	<img src={ brandURL("mascot.svg") } alt="" width="40" height="40"/>
 	<span class="site-wordmark">Tend <span>UI</span></span>
 	<span class="site-version">Preview</span>
 }
@@ -28,6 +28,17 @@ templ siteSourceLink() {
 	<a href="https://github.com/Tend-Stack/TendUI">Source <span aria-hidden="true">↗</span></a>
 }
 
-templ headerStylesheet() {
+templ siteHead() {
+	@siteIcons()
 	<link rel="stylesheet" href={ templ.SafeURL(headerStylesheetURL) }/>
+}
+
+// siteIcons is shared by the landing page, documentation and mounted demos.
+// Hashed links avoid stale browser and proxy favicon caches after brand changes.
+templ siteIcons() {
+	<link rel="icon" href={ templ.SafeURL(brandURL("favicon.ico")) } sizes="16x16 32x32 48x48"/>
+	<link rel="icon" href={ templ.SafeURL(brandURL("favicon-32.png")) } type="image/png" sizes="32x32"/>
+	<link rel="icon" href={ templ.SafeURL(brandURL("favicon.svg")) } type="image/svg+xml" sizes="any"/>
+	<link rel="apple-touch-icon" href={ templ.SafeURL(brandURL("apple-touch-icon.png")) } sizes="180x180"/>
+	<link rel="manifest" href="/site.webmanifest"/>
 }

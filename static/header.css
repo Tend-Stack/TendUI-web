@@ -3,3 +3,5 @@
 .site-wordmark > span { color: var(--tendui-primary); }
 .site-version { padding: .1875rem .4375rem; border-radius: 999px; background: var(--tendui-subtle); color: var(--tendui-muted); font-family: var(--tendui-mono); font-size: .6875rem; font-weight: 500; letter-spacing: 0; }
 @media (max-width: 56rem) { .site-version { display: none; } }
+
+.site-brand > img { inline-size: 2.5rem; block-size: 2.5rem; object-fit: contain; }
