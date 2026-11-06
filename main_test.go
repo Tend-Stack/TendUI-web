@@ -89,3 +89,48 @@ func TestProxyPreservesCodeAndCachePolicy(t *testing.T) {
 		}
 	}
 }
+
+func TestThemeBehindPublicTLSProxy(t *testing.T) {
+	h := handler()
+	for _, hx := range []bool{false, true} {
+		r := httptest.NewRequest("POST", "http://gothui.com/api/theme/toggle", nil)
+		r.Header.Set("Origin", "https://gothui.com")
+		r.Header.Set("Referer", "https://gothui.com/playground?theme=dark&state=disabled")
+		if hx {
+			r.Header.Set("HX-Request", "true")
+		}
+		w := httptest.NewRecorder()
+		h.ServeHTTP(w, r)
+		location, status := w.Header().Get("Location"), 303
+		if hx {
+			location, status = w.Header().Get("HX-Redirect"), 200
+		}
+		if w.Code != status || location != "/playground?state=disabled" {
+			t.Fatalf("proxy navigation: status=%d location=%q", w.Code, location)
+		}
+		cookies := w.Result().Cookies()
+		if len(cookies) != 1 || cookies[0].Value != "light" || !cookies[0].Secure || !cookies[0].HttpOnly {
+			t.Fatal("proxy lost theme or secure cookie policy")
+		}
+		if r.Header.Get("Referer") != "https://gothui.com/playground?theme=dark&state=disabled" {
+			t.Fatal("original request mutated")
+		}
+	}
+	for _, ref := range []string{"https://evil.example/playground", "http://gothui.com/playground", "https://gothui.com:8443/playground", "https://user@gothui.com/playground"} {
+		r := httptest.NewRequest("POST", "http://gothui.com/api/theme/toggle", nil)
+		r.Header.Set("Referer", ref)
+		w := httptest.NewRecorder()
+		h.ServeHTTP(w, r)
+		if w.Header().Get("Location") != "/" {
+			t.Errorf("accepted foreign origin %s", ref)
+		}
+	}
+	r := httptest.NewRequest("POST", "http://gothui.com/api/theme/toggle", nil)
+	r.Header.Set("Origin", "https://evil.example")
+	r.Header.Set("Referer", "https://gothui.com/playground")
+	w := httptest.NewRecorder()
+	h.ServeHTTP(w, r)
+	if w.Code != http.StatusForbidden || len(w.Result().Cookies()) != 0 {
+		t.Fatal("proxy bypassed cross-origin protection")
+	}
+}

@@ -79,3 +79,9 @@ The server adds `Cache-Control: no-transform` while preserving each route's cach
 policy. This keeps proxies from rewriting versioned Go commands as email links
 or injecting email-decoding scripts. Production smoke checks must inspect the
 actual HTML through the public domain as well as the origin/container response.
+
+For the fixed public host `gothui.com`, Tend terminates HTTPS before forwarding
+HTTP to the container. The website adapts validated presentation URLs for the
+shared demo handler and marks its cookies Secure. It preserves Origin-based
+request protection and does not trust arbitrary forwarded headers. Localhost
+HTTP development keeps its original behavior.

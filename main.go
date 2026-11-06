@@ -13,6 +13,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"os/signal"
 	"strconv"
@@ -102,7 +103,7 @@ func handler() http.Handler {
 		etag := fmt.Sprintf(`"%x"`, sha256.Sum256(data))
 		mux.HandleFunc(asset.route, func(w http.ResponseWriter, r *http.Request) {
 			if r.URL.Path != asset.route {
-				demos.ServeHTTP(w, r)
+				demos.ServeHTTP(w, canonicalDemoRequest(r))
 				return
 			}
 			if !readMethod(w, r) {
@@ -130,7 +131,7 @@ func handler() http.Handler {
 		w.Header().Set("Referrer-Policy", "strict-origin-when-cross-origin")
 		w.Header().Set("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
 		w.Header().Set("X-GothUI-Build", version)
-		origin := &originResponse{ResponseWriter: w}
+		origin := &originResponse{ResponseWriter: w, secureCookies: r.Host == "gothui.com"}
 		mux.ServeHTTP(origin, r)
 		origin.preserveContent() // Also covers handlers returning an empty body.
 	})
@@ -149,12 +150,26 @@ func readMethod(w http.ResponseWriter, r *http.Request) bool {
 // In particular, versioned Go imports must not become email-obfuscation links.
 type originResponse struct {
 	http.ResponseWriter
-	wroteHeader bool
+	wroteHeader   bool
+	secureCookies bool
 }
 
 func (w *originResponse) Unwrap() http.ResponseWriter { return w.ResponseWriter }
 
 func (w *originResponse) preserveContent() {
+	if w.secureCookies {
+		values := w.Header().Values("Set-Cookie")
+		if len(values) > 0 {
+			w.Header().Del("Set-Cookie")
+			for _, value := range values {
+				if cookie, err := http.ParseSetCookie(value); err == nil {
+					cookie.Secure = true
+					value = cookie.String()
+				}
+				w.Header().Add("Set-Cookie", value)
+			}
+		}
+	}
 	for _, value := range w.Header().Values("Cache-Control") {
 		for _, directive := range strings.Split(value, ",") {
 			if strings.EqualFold(strings.TrimSpace(directive), "no-transform") {
@@ -181,4 +196,29 @@ func (w *originResponse) Write(body []byte) (int, error) {
 		w.WriteHeader(http.StatusOK)
 	}
 	return w.ResponseWriter.Write(body)
+}
+
+// Tend terminates HTTPS for this site's fixed public origin. Adapt only the
+// presentation URLs consumed by the shared example's transport-origin check;
+// keep Origin and Sec-Fetch-Site intact for request protection. Do not trust
+// arbitrary forwarded headers or pretend the backend connection uses TLS.
+func canonicalDemoRequest(r *http.Request) *http.Request {
+	if r.Host != "gothui.com" || r.TLS != nil {
+		return r
+	}
+	clone := r.Clone(r.Context())
+	for _, name := range []string{"Referer", "HX-Current-URL"} {
+		value := r.Header.Get(name)
+		if value == "" {
+			continue
+		}
+		u, err := url.Parse(value)
+		if err != nil || u.User != nil || u.Host != "gothui.com" || u.Scheme != "https" {
+			clone.Header.Del(name)
+			continue
+		}
+		u.Scheme = "http"
+		clone.Header.Set(name, u.String())
+	}
+	return clone
 }
