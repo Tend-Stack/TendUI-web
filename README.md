@@ -1,5 +1,7 @@
 # GothUI Web
 
+<img src="static/brand/logo-dark.svg" alt="GothUI" width="240">
+
 The documentation and examples website for [GothUI](https://github.com/Tend-Stack/GothUI):
 semantic CSS and typed templ components, embedded in your Go binary.
 

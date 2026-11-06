@@ -8,12 +8,13 @@
 .app-header { padding-inline: clamp(1.25rem, 3vw, 3rem); }
 .app-brand { display: inline-flex; align-items: center; gap: .75rem; }
 .app-brand::before {
-  content: "g.";
+  content: "";
   display: grid;
   place-items: center;
   inline-size: 2.2rem;
   block-size: 2.2rem;
-  border: 1px solid var(--gothui-primary);
+  background: url("/brand/favicon.svg") center / contain no-repeat;
+  border: 0;
   border-radius: var(--gothui-radius);
   color: var(--gothui-primary);
   font-family: var(--gothui-mono);
@@ -52,3 +53,12 @@
 }
 @media (max-width: 600px) { .example-directory { grid-template-columns: minmax(0, 1fr); } }
 @media print { .app-shell { display: block; } .app-sidebar, .app-header, .doc-next { display: none; } .app-main { padding: 0; } .prose pre { white-space: pre-wrap; overflow-wrap: anywhere; } }
+
+.docs-mascot { display: block; margin-block: 1.5rem .5rem; }
+.example-section { margin-block-start: 2.5rem; }
+.prose .example-section > h2 { font-size: 1.25rem; font-weight: 600; color: var(--gothui-muted); margin-block: 0 1rem; }
+.example-directory article { display: flex; flex-direction: column; margin: 0; }
+.prose .example-directory h3 { font-size: 1.2rem; font-weight: 600; line-height: 1.35; margin: 0 0 .75rem; }
+.example-directory p { color: var(--gothui-muted); }
+.example-directory .example-link { margin-block-start: auto; font-size: .9rem; text-decoration: none; }
+.example-directory .example-link:hover { text-decoration: underline; }

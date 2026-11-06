@@ -97,18 +97,19 @@ func handler() http.Handler {
 			}{version, provenance})
 		}
 	})
-	for _, asset := range []struct{ route, file, contentType string }{
+	assetRoutes := []struct{ route, file, contentType string }{
 		{"/", "index.html", "text/html; charset=utf-8"},
 		{"/site.css", "site.css", "text/css; charset=utf-8"},
 		{siteStylesheetURL, "site.css", "text/css; charset=utf-8"},
 		{docsStylesheetURL, "docs.css", "text/css; charset=utf-8"},
-		{"/favicon.svg", "favicon.svg", "image/svg+xml"},
+		{"/favicon.svg", "brand/favicon.svg", "image/svg+xml"},
 		{"/robots.txt", "robots.txt", "text/plain; charset=utf-8"},
-	} {
-		data, err := assets.ReadFile("static/" + asset.file)
-		if err != nil {
-			panic(err)
-		}
+	}
+	for _, asset := range brandAssets {
+		assetRoutes = append(assetRoutes, struct{ route, file, contentType string }{asset.URL, "brand/" + asset.Name, asset.ContentType}, struct{ route, file, contentType string }{"/brand/" + asset.Name, "brand/" + asset.Name, asset.ContentType})
+	}
+	for _, asset := range assetRoutes {
+		data := publishedAsset("static/" + asset.file)
 		if asset.file == "index.html" {
 			data = bytes.ReplaceAll(data, []byte(`href="/site.css"`), []byte(`href="`+siteStylesheetURL+`"`))
 		}

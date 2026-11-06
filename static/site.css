@@ -26,7 +26,7 @@ button, a, summary { -webkit-tap-highlight-color: transparent; }
 .skip-link:focus { top: 1rem; }
 .masthead { display: flex; align-items: center; justify-content: space-between; gap: 1.25rem; padding-block: 1.6rem; border-bottom: 1px solid var(--line); }
 .brand { display: inline-flex; align-items: center; gap: .7rem; font-size: 1.3rem; font-weight: 750; text-decoration: none; letter-spacing: -.04em; }
-.brand-mark { display: grid; place-items: center; width: 2.1rem; height: 2.1rem; border: 1px solid var(--accent); border-radius: .6rem; color: var(--accent); font-family: ui-monospace, monospace; font-size: 1.4rem; line-height: 1; }
+.brand img { display: block; inline-size: 200px; block-size: 55px; }
 .edition, .preview-label, .preview-index, figcaption, .sample-kicker, .principle-number, .binary-label { font-family: ui-monospace, "SFMono-Regular", Consolas, monospace; font-size: .7rem; letter-spacing: .08em; }
 .edition { color: var(--muted); }
 .source-link { font-size: .85rem; text-decoration: none; }
@@ -124,3 +124,11 @@ footer a { text-decoration: none; }
   .masthead { flex-wrap: wrap; }
   .home-nav { order: 3; width: 100%; gap: 1.2rem; }
 }
+
+.mascot-welcome { display: flex; align-items: center; gap: 1rem; margin-block: -1rem 1rem; }
+.mascot-welcome img { flex: none; inline-size: clamp(5.5rem, 10vw, 9rem); block-size: auto; }
+.mascot-welcome p { margin: .4rem 0; color: var(--text); font-size: 1.3rem; font-weight: 600; }
+.mascot-welcome span { color: var(--muted); font-size: .75rem; }
+.principles h2 a { text-decoration: none; }
+.principles h2 a:hover { text-decoration: underline; }
+@media (max-width: 650px) { .brand img { inline-size: 160px; block-size: 44px; } .mascot-welcome { gap: .5rem; } }

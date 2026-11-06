@@ -9,6 +9,7 @@ import datetime
 import io
 import json
 import os
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -30,7 +31,15 @@ revision = git("rev-parse", "HEAD").decode().strip()
 stamp = datetime.datetime.fromtimestamp(int(git("show", "-s", "--format=%ct", "HEAD")), datetime.timezone.utc)
 tags = git("tag", "--points-at", "HEAD").decode().splitlines()
 release = next((tag for tag in tags if tag.startswith("v2026.") and "-" not in tag), None)
-version = release or "v2026.0.0-" + stamp.strftime("%Y%m%d%H%M%S") + "-" + revision[:12]
+if release:
+    version = release
+else:
+    # Go pseudo-versions after a stable tag use the next patch plus -0, rather
+    # than the pre-release-line v2026.0.0 prefix used before the first tag.
+    previous = subprocess.run(["git", "-C", str(source), "describe", "--tags", "--abbrev=0", "--match", "v2026.*", "HEAD"], capture_output=True, text=True)
+    match = re.fullmatch(r"v(2026)\.(\d+)\.(\d+)", previous.stdout.strip())
+    base = f"v{match[1]}.{match[2]}.{int(match[3])+1}-0." if match else "v2026.0.0-"
+    version = base + stamp.strftime("%Y%m%d%H%M%S") + "-" + revision[:12]
 escaped = "".join("!" + c.lower() if c.isupper() else c for c in module)
 shared_cache = Path(subprocess.check_output([go, "env", "GOMODCACHE"], text=True).strip())
 

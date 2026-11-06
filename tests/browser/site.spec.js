@@ -90,3 +90,31 @@ test('documentation uses GothUI with spaced navigation and responsive columns', 
     await expect(page.getByRole('navigation', { name: 'Application', exact: true })).toBeHidden();
   }
 });
+
+
+test('brand artwork, grouped demo menu, scenarios and example headings', async ({ page }, testInfo) => {
+  for (const route of ['/', '/docs', '/examples', '/catalog', '/playground?theme=dark']) {
+    await page.goto(route);
+    for (const img of await page.locator('img').all()) {
+      await img.scrollIntoViewIfNeeded();
+      await expect.poll(() => img.evaluate(e => e.complete && e.naturalWidth > 0)).toBe(true);
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), route).toBe(true);
+    if (route === '/examples') {
+      await expect(page.locator('.example-directory h3 a')).toHaveCount(0);
+      await expect(page.getByRole('heading', { name: 'Try a complete workflow' })).toBeVisible();
+      await page.screenshot({ path: testInfo.outputPath('examples.png'), fullPage: true, animations: 'disabled' });
+    }
+  }
+  await page.screenshot({ path: testInfo.outputPath('playground.png'), fullPage: true, animations: 'disabled' });
+  await page.locator('.demo-menu > summary').click();
+  await expect(page.getByRole('link', { name: 'Form wizard', exact: true })).toBeVisible();
+  await page.getByRole('link', { name: 'Form wizard', exact: true }).click();
+  await expect(page).toHaveURL(/\/wizard$/);
+  await page.goto('/playground');
+  await page.getByRole('navigation', { name: 'Try a scenario' }).getByRole('link', { name: 'Disabled controls' }).click();
+  await expect(page.getByLabel('Example text field', { exact: true })).toBeDisabled();
+  await page.getByLabel('Control state', { exact: true }).selectOption('normal');
+  await page.getByRole('button', { name: 'Apply and preview' }).click();
+  await expect(page.getByLabel('Example text field', { exact: true })).toBeEnabled();
+});

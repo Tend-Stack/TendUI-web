@@ -173,3 +173,24 @@ func TestPagesUseVersionedStylesheets(t *testing.T) {
 		}
 	}
 }
+
+func TestPreparedBrandAssets(t *testing.T) {
+	h := handler()
+	for name, asset := range brandAssets {
+		w := httptest.NewRecorder()
+		h.ServeHTTP(w, httptest.NewRequest("GET", asset.URL, nil))
+		if w.Code != 200 || !strings.HasPrefix(w.Header().Get("Content-Type"), "image/") {
+			t.Errorf("%s: not an image", name)
+		}
+		if strings.HasSuffix(name, ".svg") && (strings.Contains(w.Body.String(), "<script") || strings.Contains(w.Body.String(), "<image")) {
+			t.Errorf("%s: not a standalone vector", name)
+		}
+	}
+	page := httptest.NewRecorder()
+	h.ServeHTTP(page, httptest.NewRequest("GET", "/", nil))
+	for _, expected := range []string{brandURL("logo-dark.svg"), brandURL("mascot.svg"), "https://gothui.com" + brandURL("og-image.png")} {
+		if !strings.Contains(page.Body.String(), expected) {
+			t.Errorf("missing brand reference %s", expected)
+		}
+	}
+}

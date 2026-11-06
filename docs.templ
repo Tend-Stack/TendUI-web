@@ -10,8 +10,12 @@ templ documentationPage(g guide, navigation []components.NavItem, body templ.Com
             <meta name="viewport" content="width=device-width, initial-scale=1"/>
             <title>{ g.Title } · GothUI</title>
             <meta name="description" content={ g.Summary }/>
+            <meta property="og:title" content={ g.Title + " · GothUI" }/>
+            <meta property="og:description" content={ g.Summary }/>
+            <meta property="og:image" content={ "https://gothui.com" + brandURL("og-image.png") }/>
+            <meta name="twitter:card" content="summary_large_image"/>
             <link rel="canonical" href={ templ.SafeURL("https://gothui.com" + g.Path) }/>
-            <link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+            <link rel="icon" href={ templ.SafeURL(brandURL("favicon.svg")) } type="image/svg+xml"/>
             <link rel="stylesheet" href={ templ.SafeURL(libraryStylesheetURL) }/>
             <link rel="stylesheet" href={ templ.SafeURL(docsStylesheetURL) }/>
         </head>
@@ -46,6 +50,7 @@ templ documentationNavigation() {
 }
 
 templ documentationSidebarFooter() {
+    <img class="docs-mascot" src={ templ.SafeURL(brandURL("mascot-guide.svg")) } alt="" width="88" height="88" loading="lazy"/>
     <p>Go-native. HTML-first.<br/>Yours to compose.</p>
     <small>Built with GothUI 2026.1.0</small>
     <p><a href="https://github.com/Tend-Stack/GothUI-Web">Website source ↗</a></p>
