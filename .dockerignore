@@ -1,6 +1,6 @@
 .git
 .github
 tests
-gothui-web
+tendui-web
 *_test.go
 README.md

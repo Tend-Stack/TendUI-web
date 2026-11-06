@@ -25,7 +25,7 @@ func TestDocumentationAndLiveExamples(t *testing.T) {
 			if strings.HasPrefix(w.Header().Get("Content-Type"), "text/html") && strings.Count(w.Body.String(), "<main") != 1 {
 				t.Fatal("expected exactly one main landmark")
 			}
-			if w.Header().Get("X-GothUI-Build") != version {
+			if w.Header().Get("X-TendUI-Build") != version {
 				t.Fatal("missing deployed build identity")
 			}
 			head := httptest.NewRecorder()

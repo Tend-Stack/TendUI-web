@@ -1,13 +1,13 @@
-/* GothUI — landing page. All assets are local. */
+/* TendUI — landing page. All assets are local. Loads after the TendUI
+   stylesheet; page tokens follow its theme so the shared header matches. */
 :root {
-  color-scheme: dark;
-  --background: #111219;
-  --surface: #1b1d29;
-  --text: #f2f1ef;
-  --muted: #b2b3c1;
-  --line: #383a49;
-  --accent: #c0b4ff;
-  --ink: #1e1933;
+  --background: var(--tendui-background);
+  --surface: var(--tendui-surface);
+  --text: var(--tendui-text);
+  --muted: var(--tendui-muted);
+  --line: color-mix(in srgb, var(--tendui-border) 45%, transparent);
+  --accent: var(--tendui-primary);
+  --ink: var(--tendui-on-primary);
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
   line-height: 1.6;
@@ -16,25 +16,16 @@
 }
 * { box-sizing: border-box; }
 body { margin: 0; }
-a { color: inherit; text-underline-offset: .25em; }
-a:hover { color: var(--accent); }
-a:focus-visible, summary:focus-visible, pre:focus-visible, .table-scroll:focus-visible { outline: 3px solid var(--accent); outline-offset: 6px; }
+:where(.page) a { color: inherit; text-underline-offset: .25em; }
+:where(.page) a:hover { color: var(--accent); }
+:where(.page) a:focus-visible, summary:focus-visible, pre:focus-visible, .table-scroll:focus-visible { outline: 3px solid var(--accent); outline-offset: 6px; }
 button, a, summary { -webkit-tap-highlight-color: transparent; }
 ::selection { background: var(--accent); color: var(--ink); }
 .page { max-width: 1920px; margin-inline: auto; padding-inline: clamp(1.25rem, 5vw, 5rem); }
-.skip-link { position: absolute; top: -8rem; left: 1.25rem; z-index: 10; background: var(--accent); color: var(--ink); padding: .75rem 1rem; }
+.skip-link { position: absolute; top: -8rem; left: 1.25rem; z-index: 100; background: var(--accent); color: var(--ink); padding: .75rem 1rem; }
 .skip-link:focus { top: 1rem; }
-.masthead { display: flex; align-items: center; justify-content: space-between; gap: 1.25rem; padding-block: 1rem; border-bottom: 1px solid var(--line); }
-.brand { display: inline-flex; align-items: center; gap: .7rem; font-size: 1.3rem; font-weight: 750; text-decoration: none; letter-spacing: -.04em; }
-.brand img { display: block; flex: none; inline-size: 48px; block-size: 48px; }
-.brand-copy { display: grid; gap: .2rem; }
-.brand-name { font-size: 1.4rem; line-height: 1; }
-.brand-name > span { color: var(--accent); }
-.brand-tagline { color: var(--muted); font-size: .75rem; font-weight: 450; line-height: 1.4; letter-spacing: 0; }
 .edition, .preview-label, .preview-index, figcaption, .sample-kicker, .principle-number, .binary-label { font-family: ui-monospace, "SFMono-Regular", Consolas, monospace; font-size: .7rem; letter-spacing: .08em; }
 .edition { color: var(--muted); }
-.source-link { font-size: .85rem; text-decoration: none; }
-.source-link span { margin-left: .55rem; color: var(--accent); }
 .hero { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: center; gap: clamp(2rem, 4vw, 5rem); padding-block: clamp(2.5rem, 4vw, 4rem); }
 .hero-copy { min-width: 0; max-inline-size: 42rem; }
 .eyebrow { display: flex; align-items: center; gap: .6rem; margin: 0 0 1.75rem; font-size: .78rem; color: var(--muted); }
@@ -46,7 +37,7 @@ h1 span { color: var(--accent); }
 .announcement p { margin: .25rem 0; font-size: .87rem; color: var(--muted); max-width: 38ch; }
 .announcement .coming-soon { color: var(--text); font-weight: 650; font-size: 1rem; }
 .button { display: inline-flex; align-items: center; justify-content: space-between; gap: 1.4rem; padding: .85rem 1.2rem; background: var(--accent); color: var(--ink); border: 1px solid var(--accent); border-radius: .5rem; text-decoration: none; font-weight: 650; font-size: .9rem; transition: background-color 160ms ease; }
-.button:hover { background: #d8cfff; color: var(--ink); }
+.button:hover { background: var(--tendui-primary-hover); color: var(--ink); }
 .small-note { margin-top: .9rem; font-size: .72rem; color: var(--muted); }
 .showcase { container-type: inline-size; margin: 0; min-width: 0; border: 1px solid var(--line); border-radius: 1rem; background: var(--surface); overflow: hidden; }
 .preview-top, figcaption { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: 1.1rem 1.3rem; color: var(--muted); }
@@ -65,12 +56,12 @@ h1 span { color: var(--accent); }
 .swatches span:nth-child(2) { background: #a1badb; }
 .swatches span:nth-child(3) { background: #b9cfb5; }
 .swatches span:nth-child(4) { background: #e1ccac; }
-details { border-top: 1px solid #b4aabd; padding-top: .9rem; }
-summary { display: flex; justify-content: space-between; align-items: center; gap: 1rem; list-style: none; cursor: pointer; font-size: .8rem; font-weight: 600; min-height: 2rem; }
-summary::-webkit-details-marker { display: none; }
-summary span { font-size: 1.1rem; }
-details[open] summary span { transform: rotate(45deg); }
-details p { font-size: .8rem; color: #63576f; margin: .8rem 0 0; }
+.sample-card details { border-top: 1px solid #b4aabd; border-bottom: 0; padding-block: .9rem 0; }
+.sample-card summary { display: flex; justify-content: space-between; align-items: center; gap: 1rem; list-style: none; cursor: pointer; font-size: .8rem; font-weight: 600; min-height: 2rem; }
+.sample-card summary::-webkit-details-marker { display: none; }
+.sample-card summary span { font-size: 1.1rem; }
+.sample-card details[open] summary span { transform: rotate(45deg); }
+.sample-card details p { font-size: .8rem; color: #63576f; margin: .8rem 0 0; }
 .sample-card summary:focus-visible { outline-color: #6350a7; }
 .binary-label { margin: 1.3rem 0 -.75rem; color: var(--muted); font-size: .68rem; letter-spacing: 0; }
 .binary-label span { color: var(--accent); margin-right: .4rem; }
@@ -98,7 +89,6 @@ footer a { text-decoration: none; }
   .showcase { width: 100%; }
   .principles { grid-template-columns: 1fr; gap: 1.6rem; }
   .principles p { max-width: 45ch; }
-  .source-link { font-size: .75rem; }
 }
 @media (prefers-reduced-motion: no-preference) {
   .hero-copy, .showcase { animation: arrive 450ms ease-out both; }
@@ -109,24 +99,16 @@ footer a { text-decoration: none; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 @media (forced-colors: active) {
-  .button, .showcase, .sample-card, .brand-mark { border: 1px solid CanvasText; }
+  .button, .showcase, .sample-card { border: 1px solid CanvasText; }
   .status-dot { background: CanvasText; }
 }
 @media print {
-  :root { color-scheme: light; --background: white; --text: black; --muted: #333; --line: #777; --accent: #423170; }
+  :root { --background: white; --text: black; --muted: #333; --line: #777; --accent: #423170; }
   .hero { padding-block: 2rem; }
   .showcase, .sample-card { background: white; box-shadow: none; }
   .preview-canvas { background: none; }
   .button { background: white; color: black; }
   .skip-link { display: none; }
-}
-
-/* Primary navigation shared with the documentation links. */
-.home-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 1.5rem; font-size: .85rem; }
-.home-nav a { text-decoration: none; }
-@media (max-width: 850px) {
-  .masthead { flex-wrap: wrap; }
-  .home-nav { order: 3; width: 100%; gap: 1.2rem; }
 }
 
 .mascot-welcome { display: flex; align-items: center; gap: 1rem; margin-block: 0 1rem; }
@@ -136,7 +118,7 @@ footer a { text-decoration: none; }
 .mascot-welcome span { color: var(--muted); font-size: .75rem; }
 .principles h2 a { text-decoration: none; }
 .principles h2 a:hover { text-decoration: underline; }
-@media (max-width: 650px) { .brand { gap: .4rem; } .brand img { inline-size: 40px; block-size: 40px; } .mascot-welcome { gap: .5rem; } }
+@media (max-width: 650px) { .mascot-welcome { gap: .5rem; } }
 
 /* Arrange the preview by its own available width, including on tablets. */
 @container (min-width: 40rem) {

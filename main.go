@@ -1,4 +1,4 @@
-// GothUI-Web serves documentation and runnable examples from one Go binary.
+// TendUI-web serves documentation and runnable examples from one Go binary.
 package main
 
 import (
@@ -21,8 +21,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/Tend-Stack/GothUI/v2026"
-	"github.com/Tend-Stack/GothUI/v2026/examples/site"
+	"github.com/Tend-Stack/TendUI/v2026"
+	"github.com/Tend-Stack/TendUI/v2026/components"
+	"github.com/Tend-Stack/TendUI/v2026/examples/site"
 )
 
 //go:embed static/* content/* library-version.json
@@ -63,7 +64,7 @@ func main() {
 			log.Printf("shutdown: %v", err)
 		}
 	}()
-	log.Printf("GothUI-Web %s listening on %s", version, server.Addr)
+	log.Printf("TendUI-web %s listening on %s", version, server.Addr)
 	if err := server.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
 		log.Fatal(err)
 	}
@@ -72,12 +73,12 @@ func main() {
 
 func handler() http.Handler {
 	mux := http.NewServeMux()
-	demos := site.Handler()
+	demos := site.HandlerWithOptions(demoOptions())
 	registerDocs(mux)
-	libraryAssets := gothui.AssetHandler()
+	libraryAssets := tendui.AssetHandler()
 	mux.HandleFunc(libraryStylesheetURL, func(w http.ResponseWriter, r *http.Request) {
 		clone := r.Clone(r.Context())
-		clone.URL.Path = gothui.StylesheetURL
+		clone.URL.Path = tendui.StylesheetURL
 		libraryAssets.ServeHTTP(w, clone)
 	})
 	provenance, err := assets.ReadFile("library-version.json")
@@ -98,10 +99,10 @@ func handler() http.Handler {
 		}
 	})
 	assetRoutes := []struct{ route, file, contentType string }{
-		{"/", "index.html", "text/html; charset=utf-8"},
 		{"/site.css", "site.css", "text/css; charset=utf-8"},
 		{siteStylesheetURL, "site.css", "text/css; charset=utf-8"},
 		{docsStylesheetURL, "docs.css", "text/css; charset=utf-8"},
+		{headerStylesheetURL, "header.css", "text/css; charset=utf-8"},
 		{"/favicon.svg", "brand/favicon.svg", "image/svg+xml"},
 		{"/robots.txt", "robots.txt", "text/plain; charset=utf-8"},
 	}
@@ -110,15 +111,8 @@ func handler() http.Handler {
 	}
 	for _, asset := range assetRoutes {
 		data := publishedAsset("static/" + asset.file)
-		if asset.file == "index.html" {
-			data = bytes.ReplaceAll(data, []byte(`href="/site.css"`), []byte(`href="`+siteStylesheetURL+`"`))
-		}
 		etag := fmt.Sprintf(`"%x"`, sha256.Sum256(data))
 		mux.HandleFunc(asset.route, func(w http.ResponseWriter, r *http.Request) {
-			if r.URL.Path != asset.route {
-				demos.ServeHTTP(w, canonicalDemoRequest(r))
-				return
-			}
 			if !readMethod(w, r) {
 				return
 			}
@@ -128,6 +122,22 @@ func handler() http.Handler {
 			http.ServeContent(w, r, asset.file, time.Time{}, bytes.NewReader(data))
 		})
 	}
+	landing := renderLanding()
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path != "/" {
+			demos.ServeHTTP(w, canonicalDemoRequest(r))
+			return
+		}
+		if !readMethod(w, r) {
+			return
+		}
+		page := landing[siteTheme(r)]
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		w.Header().Set("Cache-Control", "public, max-age=0, must-revalidate")
+		w.Header().Set("Vary", "Cookie") // The saved theme changes the markup.
+		w.Header().Set("ETag", page.etag)
+		http.ServeContent(w, r, "index.html", time.Time{}, bytes.NewReader(page.body))
+	})
 	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		if !readMethod(w, r) {
 			return
@@ -143,8 +153,8 @@ func handler() http.Handler {
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("Referrer-Policy", "strict-origin-when-cross-origin")
 		w.Header().Set("Permissions-Policy", "camera=(), microphone=(), geolocation=()")
-		w.Header().Set("X-GothUI-Build", version)
-		origin := &originResponse{ResponseWriter: w, secureCookies: r.Host == "gothui.com"}
+		w.Header().Set("X-TendUI-Build", version)
+		origin := &originResponse{ResponseWriter: w, secureCookies: r.Host == "tendui.com"}
 		mux.ServeHTTP(origin, r)
 		origin.preserveContent() // Also covers handlers returning an empty body.
 	})
@@ -216,7 +226,7 @@ func (w *originResponse) Write(body []byte) (int, error) {
 // keep Origin and Sec-Fetch-Site intact for request protection. Do not trust
 // arbitrary forwarded headers or pretend the backend connection uses TLS.
 func canonicalDemoRequest(r *http.Request) *http.Request {
-	if r.Host != "gothui.com" || r.TLS != nil {
+	if r.Host != "tendui.com" || r.TLS != nil {
 		return r
 	}
 	clone := r.Clone(r.Context())
@@ -226,7 +236,7 @@ func canonicalDemoRequest(r *http.Request) *http.Request {
 			continue
 		}
 		u, err := url.Parse(value)
-		if err != nil || u.User != nil || u.Host != "gothui.com" || u.Scheme != "https" {
+		if err != nil || u.User != nil || u.Host != "tendui.com" || u.Scheme != "https" {
 			clone.Header.Del(name)
 			continue
 		}
@@ -234,4 +244,23 @@ func canonicalDemoRequest(r *http.Request) *http.Request {
 		clone.Header.Set(name, u.String())
 	}
 	return clone
+}
+
+type landingResponse struct {
+	body []byte
+	etag string
+}
+
+// renderLanding prepares the home page once per theme so conditional requests
+// keep working while the markup follows the saved appearance.
+func renderLanding() map[components.Theme]landingResponse {
+	pages := make(map[components.Theme]landingResponse, 3)
+	for _, theme := range []components.Theme{components.ThemeLight, components.ThemeDark, components.ThemeSystem} {
+		var buf bytes.Buffer
+		if err := landingPage(themeAttribute(theme)).Render(context.Background(), &buf); err != nil {
+			panic(err)
+		}
+		pages[theme] = landingResponse{buf.Bytes(), fmt.Sprintf(`"%x"`, sha256.Sum256(buf.Bytes()))}
+	}
+	return pages
 }

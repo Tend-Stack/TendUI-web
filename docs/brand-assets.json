@@ -1,37 +1,47 @@
-[
-  {
-    "file": "logo-dark.svg",
-    "source": "01_primary_logos/gothui-compact-dark.svg",
-    "bytes": 5427
-  },
-  {
-    "file": "logo-light.svg",
-    "source": "01_primary_logos/gothui-compact-light.svg",
-    "bytes": 5427
-  },
-  {
-    "file": "mascot.svg",
-    "source": "02_mascot_icons/mascot-arch-transparent.svg",
-    "bytes": 4905
-  },
-  {
-    "file": "mascot-guide.svg",
-    "source": "02_mascot_icons/mascot-only-transparent.svg",
-    "bytes": 4128
-  },
-  {
-    "file": "favicon.svg",
-    "source": "02_mascot_icons/favicon.svg",
-    "bytes": 1051
-  },
-  {
-    "file": "og-image.png",
-    "source": "03_web_and_social/og-image-1200x630.png",
-    "bytes": 528108
-  },
-  {
-    "file": "github-social-preview.png",
-    "source": "03_web_and_social/github-social-preview-1280x640.png",
-    "bytes": 552468
-  }
-]
+{
+  "source": "Tend UI Gopher Brand Kit supplied by the project owner",
+  "assets": [
+    {
+      "file": "static/brand/mascot.svg",
+      "source": "02_mascot_icons/mascot-arch-transparent.svg",
+      "bytes": 5005,
+      "processing": "Copied unchanged"
+    },
+    {
+      "file": "static/brand/mascot-guide.svg",
+      "source": "02_mascot_icons/mascot-only-transparent.svg",
+      "bytes": 4228,
+      "processing": "Copied unchanged"
+    },
+    {
+      "file": "static/brand/favicon.svg",
+      "source": "02_mascot_icons/favicon.svg",
+      "bytes": 1051,
+      "processing": "Copied unchanged"
+    },
+    {
+      "file": "static/brand/logo-dark.svg",
+      "source": "01_primary_logos/tend-ui-compact-dark.svg",
+      "bytes": 5527,
+      "processing": "Copied unchanged"
+    },
+    {
+      "file": "static/brand/logo-light.svg",
+      "source": "01_primary_logos/tend-ui-compact-light.svg",
+      "bytes": 5527,
+      "processing": "Copied unchanged"
+    },
+    {
+      "file": "static/brand/og-image.png",
+      "source": "03_web_and_social/og-image-1200x630.png",
+      "bytes": 616767,
+      "processing": "Copied unchanged"
+    },
+    {
+      "file": "static/brand/github-social-preview.png",
+      "source": "03_web_and_social/github-social-preview-1280x640.png",
+      "bytes": 649151,
+      "processing": "Copied unchanged"
+    }
+  ]
+}

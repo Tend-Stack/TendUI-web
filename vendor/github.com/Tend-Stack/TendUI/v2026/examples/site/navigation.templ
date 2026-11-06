@@ -1,0 +1,51 @@
+package site
+
+import "github.com/Tend-Stack/TendUI/v2026/components"
+
+templ demoHeader(active string) {
+	<a class="skip-link" href="#main">Skip to content</a>
+	if header := siteOptions(ctx).Header; header != nil {
+		@header(active)
+	} else {
+		@components.SiteHeader(components.SiteHeaderProps{
+			Brand:     demoBrand(),
+			BrandHref: "/",
+			Items:     demoNavigation(active),
+			Actions:   components.ThemeToggle(components.ThemeToggleProps{IconOnly: true}),
+		})
+	}
+}
+
+templ demoBrand() {
+	<img src="/demo-gopher.svg" alt="" width="32" height="32"/>
+	<span>TendUI</span>
+}
+
+templ demoFooter() {
+	<footer><small>TendUI { version } · Native HTML and CSS. No JavaScript required.</small></footer>
+}
+
+templ demoDirectory() {
+	<section aria-labelledby="demos-title">
+		<h2 id="demos-title">Take it for a spin.</h2>
+		@components.Grid(components.GridProps{}) {
+			@components.Card(components.CardProps{Header: cardHeading("01 / Component catalog")}) {
+				<p>Search the library, try a preview, and download the same templ source used to render it.</p>
+				<a href="/catalog">Find a component →</a>
+			}
+			@components.Card(components.CardProps{Header: cardHeading("02 / Component playground")}) {
+				<p>Change themes, button variants, input states, and card slots. Inspect every combination.</p>
+				<a href="/playground">Open the playground →</a>
+			}
+			@components.Card(components.CardProps{Header: cardHeading("03 / Form lab")}) {
+				<p>Exercise browser validation, server errors, reset behavior, and a successful submission.</p>
+				<a href="/forms">Test a form →</a>
+				<p><a href="/uploads">Preview a CSV upload →</a></p>
+			}
+			@components.Card(components.CardProps{Header: cardHeading("04 / Project dashboard")}) {
+				<p>See cards, metrics, filters, tables, and progress indicators in a practical layout.</p>
+				<a href="/dashboard">Explore the dashboard →</a>
+			}
+		}
+	</section>
+}

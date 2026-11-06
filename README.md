@@ -1,25 +1,29 @@
-# GothUI Web
+# TendUI Web
 
-<img src="static/brand/logo-dark.svg" alt="GothUI" width="240">
+<img src="static/brand/mascot.svg" alt="TendUI" width="112">
 
-The documentation and examples website for [GothUI](https://github.com/Tend-Stack/GothUI):
-semantic CSS and typed templ components, embedded in your Go binary.
+The documentation and examples website for [TendUI](https://github.com/Tend-Stack/TendUI):
+beautiful interfaces with no frontend build pipeline. Pure CSS and semantic HTML
+work with any stack; first-class Go and templ support embeds the stylesheet
+inside your Go binary.
 
-The documentation composes GothUI’s typed `AppShell` and `Prose` components
+The documentation composes TendUI’s typed `AppShell` and `Prose` components
 with its embedded semantic stylesheet. Guide content uses Go HTML templates;
-the landing page retains its own branding. Catalogs and demos share GothUI’s
-example handler. All assets are embedded. No Node, npm, JavaScript,
+the landing page keeps its own hero styling. Every page, including the mounted
+catalog and demos, renders one shared `SiteHeader` (`site_header.templ`) and
+reads the same `tendui_theme` cookie, which defaults to dark. Catalogs and demos
+share TendUI’s example handler through `site.HandlerWithOptions`. All assets are embedded. No Node, npm, JavaScript,
 external fonts, tracking, database, or runtime downloads are required to build or
 serve it. The test-only browser suite is separate from the shipped application.
 
 Documentation lives under `/docs`, the searchable 36-component reference under
 `/catalog`, application examples under `/examples`, and native state/appearance
-controls under `/playground`. The public canonical origin is https://gothui.com.
+controls under `/playground`. The public canonical origin is https://tendui.com.
 
 The library and templ runtime are vendored at the exact revision recorded in
 `library-version.json`. Docker builds use `GOPROXY=off` and need no private-repo
 credentials. To refresh from a clean library checkout, run
-`python3 tools/vendor-library.py /path/to/GothUI`. This uses the local Go module
+`python3 tools/vendor-library.py /path/to/TendUI`. This uses the local Go module
 cache for already-downloaded dependencies, records a tag or exact pseudo-version,
 and removes its temporary proxy and cache. Commit the resulting module metadata,
 manifest, and vendor directory together. No local `replace` ships in the repo.
@@ -40,13 +44,13 @@ GET/HEAD and conditional requests. Unknown paths return 404.
 ```sh
 go test -race ./...
 go vet ./...
-CGO_ENABLED=0 go build -trimpath -o gothui-web .
-./gothui-web -version
+CGO_ENABLED=0 go build -trimpath -o tendui-web .
+./tendui-web -version
 ```
 
 ## Tend deployment
 
-Connect `https://github.com/Tend-Stack/GothUI-Web`, branch `main`, in Tend.
+Connect `https://github.com/Tend-Stack/TendUI-web`, branch `main`, in Tend.
 Select the repository-root `Dockerfile`, container port **8080**, and HTTP health
 path **/healthz**. No secrets, volumes, or additional services are required.
 Enable GitHub push deployments in Tend; this repository does not call a deploy
@@ -56,8 +60,8 @@ The image runs as a non-root user and contains only the static Go executable.
 For a local container check:
 
 ```sh
-docker build --build-arg VERSION="$(git describe --tags --long --dirty --always)" -t gothui-web .
-docker run --rm -p 8080:8080 gothui-web
+docker build --build-arg VERSION="$(git describe --tags --long --dirty --always)" -t tendui-web .
+docker run --rm -p 8080:8080 tendui-web
 ```
 
 Version lines use `YEAR.RELEASE.FIX`, initially `2026.1.0`; Git tags use `v2026.1.0`.
@@ -66,7 +70,7 @@ Release/development builds should pass `git describe --tags --long --dirty` as
 
 GitHub Actions tests the HTTP contract, runs vet, and builds the Dockerfile.
 Tend may deploy independently of CI; check both statuses after publication.
-The documentation and homepage include canonical metadata for gothui.com;
+The documentation and homepage include canonical metadata for tendui.com;
 `/sitemap.xml` lists the primary documentation and example routes.
 
 ## Scope
@@ -84,7 +88,7 @@ policy. This keeps proxies from rewriting versioned Go commands as email links
 or injecting email-decoding scripts. Production smoke checks must inspect the
 actual HTML through the public domain as well as the origin/container response.
 
-For the fixed public host `gothui.com`, Tend terminates HTTPS before forwarding
+For the fixed public host `tendui.com`, Tend terminates HTTPS before forwarding
 HTTP to the container. The website adapts validated presentation URLs for the
 shared demo handler and marks its cookies Secure. It preserves Origin-based
 request protection and does not trust arbitrary forwarded headers. Localhost
