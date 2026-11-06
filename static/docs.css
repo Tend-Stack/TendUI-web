@@ -28,7 +28,7 @@
 .app-main { padding: clamp(1.5rem, 4vw, 4rem); }
 .app-main > .prose { margin-inline: auto; }
 .eyebrow { font-size: .75rem; letter-spacing: .08em; color: var(--gothui-muted); }
-.prose h1 { margin-block-start: 1rem; max-inline-size: 23ch; }
+.prose h1 { margin-block-start: 1rem; max-inline-size: 23ch; font-size: clamp(1.8rem, 3vw, 2.6rem); }
 .doc-lead { font-size: 1.15rem; color: var(--gothui-muted); }
 .doc-callout {
   padding: 1.25rem 1.5rem;

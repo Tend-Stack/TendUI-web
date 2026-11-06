@@ -188,7 +188,7 @@ func TestPreparedBrandAssets(t *testing.T) {
 	}
 	page := httptest.NewRecorder()
 	h.ServeHTTP(page, httptest.NewRequest("GET", "/", nil))
-	for _, expected := range []string{brandURL("logo-dark.svg"), brandURL("mascot.svg"), "https://gothui.com" + brandURL("og-image.png")} {
+	for _, expected := range []string{"Good interfaces. Pure Go.</span>", brandURL("mascot.svg"), "https://gothui.com" + brandURL("og-image.png")} {
 		if !strings.Contains(page.Body.String(), expected) {
 			t.Errorf("missing brand reference %s", expected)
 		}

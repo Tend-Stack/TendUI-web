@@ -8,7 +8,7 @@ image-generation service or client-side JavaScript are required.
 
 | Asset | Format | Use |
 | --- | --- | --- |
-| `/brand/logo-dark.svg`, `/brand/logo-light.svg` | True SVG, 800 × 220 viewBox | Compact header and README lockups; display near 200 × 55 |
+| `/brand/logo-dark.svg`, `/brand/logo-light.svg` | True SVG, 800 × 220 viewBox | README lockups and downloadable artwork |
 | `/brand/favicon.svg` | True SVG, 64 × 64 viewBox | Browser icon and small documentation brand mark |
 | `/brand/mascot.svg` | True SVG, 512 × 512 viewBox | Homepage gopher with arch |
 | `/brand/mascot-guide.svg` | True SVG, 512 × 512 viewBox | Small documentation companion without arch |
@@ -16,6 +16,8 @@ image-generation service or client-side JavaScript are required.
 | `/brand/github-social-preview.png` | PNG, 1280 × 640 | GitHub repository social preview upload |
 
 The vectors are 1–6 KB each and have explicit dimensions to avoid layout shifts.
+The homepage header pairs the gopher SVG with HTML wordmark and tagline text,
+keeping the tagline readable instead of shrinking it inside the full lockup.
 The social PNGs are supplied publication-sized illustrations, not SVG wrappers;
 they are only fetched by sharing clients or explicit downloads. The website
 uses versioned asset URLs. The friendly URLs above remain available for downloads.
