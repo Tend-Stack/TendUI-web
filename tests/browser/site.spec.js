@@ -96,6 +96,8 @@ test('brand artwork, grouped demo menu, scenarios and example headings', async (
   for (const route of ['/', '/docs', '/examples', '/catalog', '/playground?theme=dark']) {
     await page.goto(route);
     for (const img of await page.locator('img').all()) {
+      // The decorative sidebar footer is intentionally hidden on small screens.
+      if (!(await img.isVisible())) continue;
       await img.scrollIntoViewIfNeeded();
       await expect.poll(() => img.evaluate(e => e.complete && e.naturalWidth > 0)).toBe(true);
     }
