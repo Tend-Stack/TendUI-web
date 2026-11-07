@@ -19,6 +19,16 @@ preserve unrelated work, and follow [CONTRIBUTING.md](CONTRIBUTING.md).
   from a clean library checkout, use `python3 tools/vendor-library.py /path/to/TendUI`
   and commit all resulting metadata and vendor changes together.
 
+## Repository identity
+
+- Present this repository as the source for **tendui.com**, with website-specific
+  README artwork and contributor instructions distinct from the component library.
+- Public product, installation and source links must point to
+  `https://github.com/Tend-Stack/TendUI`. Reserve links to this repository for
+  clearly labeled website-maintainer instructions, issues and deployment setup.
+- Route component and library API changes to TendUI; keep the README focused on
+  running, maintaining and contributing to this website.
+
 ## Product rules
 
 - Use TendUI components and semantic HTML. Keep the public site usable without
