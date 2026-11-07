@@ -1,10 +1,14 @@
 # Contributing to TendUI-web
 
-Thank you for helping improve TendUI. Start with a bug, documentation fix,
-accessibility improvement or an issue labeled `good first issue` or `help wanted`.
-Discuss new components, public API changes, dependencies and large refactors in an
-issue before implementation. A proposal should explain the use case, native HTML
-semantics, keyboard behavior, narrow-screen behavior and alternatives considered.
+This repository maintains **tendui.com**, the documentation and examples website.
+Start with a guide correction, navigation fix, website accessibility improvement
+or an issue labeled `good first issue` or `help wanted`.
+
+For changes to components, semantic CSS, Go APIs or library behavior, contribute
+to [TendUI](https://github.com/Tend-Stack/TendUI) instead. This website consumes
+that library as a pinned dependency; do not edit its vendored copy here.
+Discuss substantial website changes in an issue before implementation, including
+keyboard behavior, narrow-screen behavior and the pages affected.
 
 ## Contribution terms: MIT + DCO
 

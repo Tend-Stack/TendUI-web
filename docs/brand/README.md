@@ -1,9 +1,14 @@
-# TendUI website documentation artwork
+# Website repository artwork
 
-## README banners
+[website-banner.svg](website-banner.svg) is an original vector composition for
+this repository's README. Its browser-window layout and **WEBSITE SOURCE** label
+identify **tendui.com**, distinct from the illustrated product banner in the
+[TendUI component library](https://github.com/Tend-Stack/TendUI).
 
-The light and dark README banners are copied unchanged from the owner-supplied
-Tend UI Gopher Brand Kit. Source names, byte sizes and SHA-256 hashes are recorded
-in [readme-banners.json](readme-banners.json). They are documentation assets and
-are not embedded into the runtime stylesheet or website executable. The README
-uses a `picture` element to follow the reader's preferred color scheme.
+The banner uses the site's midnight and violet palette. It contains no external
+images, fonts, scripts or remote resources. It scales without a raster download
+and is documentation-only; it is not embedded in the website executable.
+
+[website-banner.json](website-banner.json) records its purpose, size and SHA-256.
+The supplied product artwork used by the live site retains its separate
+[asset provenance](../brand-assets.md).
