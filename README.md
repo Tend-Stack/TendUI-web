@@ -1,6 +1,9 @@
-# TendUI Web
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/brand/readme-banner-dark.png">
+  <img src="docs/brand/readme-banner-light.png" alt="Tend UI — Modern UI for Go" width="1200">
+</picture>
 
-<img src="static/brand/mascot.svg" alt="TendUI" width="112">
+# The home of TendUI
 
 The documentation and examples website for [TendUI](https://github.com/Tend-Stack/TendUI):
 beautiful interfaces with no frontend build pipeline. Pure CSS and semantic HTML
@@ -26,6 +29,17 @@ The library and templ runtime are vendored at the exact revision recorded in
 cache for already-downloaded dependencies, records a tag or exact pseudo-version,
 and removes its temporary proxy and cache. Commit the resulting module metadata,
 manifest, and vendor directory together. No local `replace` ships in the repo.
+
+[Visit tendui.com](https://tendui.com) · [Documentation](https://tendui.com/docs) · [Component catalog](https://tendui.com/catalog) · [Library source](https://github.com/Tend-Stack/TendUI)
+
+## At a glance
+
+| Surface | Purpose |
+| --- | --- |
+| Documentation | Go/templ and HTML quickstarts, theming, accessibility and agent setup. |
+| Catalog | Component previews and downloadable recipes. |
+| Playground | Native controls for states, appearance and interactions. |
+| Deployment | One Go binary with embedded assets and vendored dependencies. |
 
 ## Run
 

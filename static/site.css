@@ -116,8 +116,8 @@ footer a { text-decoration: none; }
 .mascot-welcome img { flex: none; inline-size: clamp(4rem, 18cqi, 7rem); block-size: auto; }
 .mascot-welcome p { margin: .4rem 0; color: var(--text); font-size: 1.3rem; font-weight: 600; }
 .mascot-welcome span { color: var(--muted); font-size: .75rem; }
-.principles h2 a { text-decoration: none; }
-.principles h2 a:hover { text-decoration: underline; }
+.principles h2 a { display: inline-block; padding: .15rem .4rem; margin-inline-start: -.4rem; border-radius: .4rem; text-decoration: none; }
+.principles h2 a:hover, .principles h2 a:focus-visible { color: var(--accent); background: var(--tendui-subtle); text-decoration: none; }
 @media (max-width: 650px) { .mascot-welcome { gap: .5rem; } }
 
 /* Arrange the preview by its own available width, including on tablets. */
