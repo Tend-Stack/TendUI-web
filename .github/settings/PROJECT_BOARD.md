@@ -1,12 +1,10 @@
 # Shared TendUI project board
 
-The GitHub connector used for preparation cannot create Projects. The issues
-below already exist; this file describes the owner setup still needed, not a
-claim that a board is active.
-
-Create an organization-level **TendUI** project at
-https://github.com/orgs/Tend-Stack/projects using the Board layout. It should
-track both `Tend-Stack/TendUI` and `Tend-Stack/TendUI-web`.
+The shared [TendUI project](https://github.com/orgs/Tend-Stack/projects/2) was
+created and verified on 2026-11-07 UTC. Both `Tend-Stack/TendUI` and
+`Tend-Stack/TendUI-web` are linked. Status and Priority fields, four named board
+views and the four seed issues below were configured by the owner setup script.
+The board remains private pending publication review.
 
 ## Fields and views
 
@@ -26,8 +24,17 @@ track both `Tend-Stack/TendUI` and `Tend-Stack/TendUI-web`.
 - https://github.com/Tend-Stack/TendUI/issues/5 — html/template recipe; Normal, Ready, good first issue.
 - https://github.com/Tend-Stack/TendUI-web/issues/3 — visual baselines; Normal, Backlog.
 
-Link the current preview PRs as In review. Add the board URL to each repository's
-About/Projects area and CONTRIBUTING.md once the board exists.
+Add current review PRs as In review during triage. The project is linked to both
+repositories and referenced in their CONTRIBUTING.md files.
+
+## Remaining UI configuration
+
+- Open All work and group the board by Status. Arrange columns as Backlog,
+  Ready, In progress, In review, Done; keep existing option identities.
+- Review the default View 1 table and keep it only if useful for triage.
+- The Launch view filters `label:launch`; apply that label to launch tasks.
+- Verify the built-in automation below in the Project settings. The setup script
+  did not enable or verify these workflows.
 
 ## Automation and triage
 

@@ -213,3 +213,32 @@ test('HTML onboarding downloads match the working example', async ({ browser, re
   await expect(page.locator('script')).toHaveCount(0);
   await context.close();
 });
+
+
+test('homepage and catalog actions use clear hover and keyboard treatments', async ({ page }, testInfo) => {
+  for (const theme of ['dark', 'light']) {
+    await page.context().addCookies([{ name: 'tendui_theme', value: theme, url: 'http://127.0.0.1:8080' }]);
+    await page.goto('/');
+    await expect(page.locator('html')).toHaveAttribute('data-theme', theme);
+    const principle = page.locator('.principles h2 a').first();
+    await principle.hover();
+    await expect(principle).toHaveCSS('text-decoration-line', 'none');
+    await page.locator('.principles').screenshot({ path: testInfo.outputPath(`principles-${theme}.png`) });
+    await page.goto('/catalog');
+    const card = page.locator('.catalog-card').first();
+    const action = card.locator('.catalog-card-link');
+    await expect(action).toHaveCSS('text-decoration-line', 'none');
+    await action.hover();
+    await expect(action).toHaveCSS('text-decoration-line', 'none');
+    await action.focus();
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('Shift+Tab');
+    await expect(action).toBeFocused();
+    expect(await action.evaluate(e => getComputedStyle(e).outlineStyle)).not.toBe('none');
+    await card.screenshot({ path: testInfo.outputPath(`catalog-action-${theme}.png`) });
+    const href = await action.getAttribute('href');
+    await action.click();
+    await expect(page).toHaveURL(new RegExp(href + '$'));
+    await expect(page.getByRole('heading', { name: 'Templ example' })).toBeVisible();
+  }
+});

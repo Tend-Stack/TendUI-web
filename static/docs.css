@@ -46,4 +46,4 @@
 .prose .example-directory h3 { font-size: 1.2rem; font-weight: 600; line-height: 1.35; margin: 0 0 .75rem; }
 .example-directory p { color: var(--tendui-muted); }
 .example-directory .example-link { margin-block-start: auto; font-size: .9rem; text-decoration: none; }
-.example-directory .example-link:hover { text-decoration: underline; }
+.example-directory .example-link:hover { text-decoration: none; }
