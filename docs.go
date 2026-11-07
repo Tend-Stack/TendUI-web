@@ -20,6 +20,7 @@ var guides = []guide{
 	{"/docs", "Build something thoughtful.", "A practical guide to semantic interfaces with Go, templ, and optional HTMX.", "overview"},
 	{"/docs/install", "From module to interface.", "Install TendUI, serve its embedded CSS, and render your first page.", "install"},
 	{"/docs/html", "Start with HTML. Add your stack.", "Use TendUI with two static files and no build tools.", "html"},
+	{"/docs/agents", "Build with a coding agent.", "Give Codex, Claude Code and other tools practical TendUI project instructions.", "agents"},
 	{"/docs/theming", "Make it feel like yours.", "Choose a color mode, compose appearance settings, or override the tokens.", "theming"},
 	{"/docs/forms", "Forms that work with the browser.", "Native submission first. Validation and persistence belong to your application.", "forms"},
 	{"/docs/htmx", "Enhance a working page.", "Use optional HTMX attributes with explicit full-page and fragment responses.", "htmx"},
@@ -37,7 +38,7 @@ func registerDocs(mux *http.ServeMux) {
 			}
 			var buf bytes.Buffer
 			navigation := make([]components.NavItem, 0, len(guides)+1)
-			labels := []string{"Introduction", "Installation", "HTML & CSS", "Appearance", "Forms & validation", "HTMX", "Accessibility", "Deployment", "Examples"}
+			labels := []string{"Introduction", "Installation", "HTML & CSS", "Coding agents", "Appearance", "Forms & validation", "HTMX", "Accessibility", "Deployment", "Examples"}
 			for i, entry := range guides {
 				navigation = append(navigation, components.NavItem{Label: labels[i], Href: entry.Path, Current: entry.Path == g.Path})
 			}

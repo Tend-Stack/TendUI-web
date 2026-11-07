@@ -1,0 +1,51 @@
+{{define "body"}}
+<h2>Give your agent the right starting point.</h2>
+<p>TendUI works with coding agents just as it does with people: use the installed API, semantic HTML and your application's existing stack. Tell the agent whether you use plain HTML, Go's <code>html/template</code>, or Go with templ. HTMX is optional.</p>
+<div class="doc-callout"><strong>Using TendUI or contributing to it?</strong><p>The instructions below are for your own application. To change the library or this website, use the repository instructions linked at the end of this page.</p></div>
+<h2>1. Add context to your project</h2>
+<p>Merge this section into <code>AGENTS.md</code> in your application root. Preserve your existing instructions and adapt the validation commands to your project. Installing a Go dependency does not install project instructions into your app.</p>
+<pre tabindex="0" aria-label="TendUI application instructions"><code>## TendUI in this application
+
+- Read go.mod (or the pinned CSS source) to identify the installed TendUI version.
+  Do not upgrade it or guess component props/classes to complete a task.
+- Prefer semantic HTML and native browser controls. Do not add Node/npm, a CSS
+  build step, or client JavaScript solely to use TendUI.
+- With Go, import github.com/Tend-Stack/TendUI/v2026 as package tendui.
+  Mount tendui.AssetHandler() at tendui.AssetPath without StripPrefix and link
+  tendui.StylesheetURL. CSS is embedded and ships inside the executable.
+- With templ, use typed components from the /components package. Inspect the
+  installed API before writing props. Edit .templ files, regenerate with the
+  generator matching the application&#x27;s templ dependency, and commit generated Go.
+- For plain HTML or html/template, serve the pinned stylesheet as a local asset;
+  keep existing escaping and server-side rendering. templ is optional.
+- Applications own routes, validation, authentication, CSRF protection, sessions
+  and persistence. Never copy demo handlers as production security logic.
+- HTMX attributes alone do not execute requests. Add the optional runtime only
+  when requested; keep native form/link fallbacks and correct fragment responses.
+- Use documented --tendui-* tokens and data-theme=&quot;light&quot; or &quot;dark&quot;; omit the
+  theme attribute for system preference. Preserve labels, focus, keyboard access,
+  responsive layout, error messages and reduced-motion behavior.
+- Run the application&#x27;s relevant tests and build. Check the page and stylesheet
+  routes and the requested user flow; report checks performed and limitations.</code></pre>
+<p>Start from the <a href="/docs/install">Go and templ quickstart</a> or <a href="/docs/html">HTML and CSS guide</a>. Use the <a href="/catalog">catalog</a> to find a pattern, then check the source and props at your installed version; online examples may describe a newer release.</p>
+<h2>2. Connect your coding tool</h2>
+<h3>Codex</h3>
+<p>Codex reads project <code>AGENTS.md</code> files. Keep the shared instructions in your project root and follow the <a href="https://learn.chatgpt.com/docs/agent-configuration/agents-md">official instruction-discovery guide</a> for directory scope and overrides.</p>
+<h3>Claude Code</h3>
+<p>Add this import to a neighboring <code>CLAUDE.md</code>, preserving existing content. Put the import on its own line outside a code fence in the actual file:</p>
+<pre tabindex="0" aria-label="Claude Code shared instructions import"><code>@AGENTS.md</code></pre>
+<p>The <a href="https://code.claude.com/docs/en/memory#import-additional-files">documented import mechanism</a> lets you maintain one shared policy, including in sessions that do not load <code>AGENTS.md</code> directly.</p>
+<h3>Other tools</h3>
+<p>Select this file in the tool's project-context settings or ask it explicitly to read it. Automatic discovery varies. Start a fresh session after setup and ask the agent to summarize the applicable instructions and installed TendUI version before editing.</p>
+<p>Instruction files guide behavior. Tests, human review and tool permissions still matter; the files do not enforce permissions or guarantee correctness.</p>
+<h2>3. Give it a concrete task</h2>
+<blockquote><p>Read our project instructions and installed TendUI API. Add a labeled settings form using our existing stack and server routes. Preserve native submission, light/dark themes and keyboard behavior. Show the changed files, run relevant tests, and explain anything you could not verify. Do not add dependencies.</p></blockquote>
+<p>Review the result in the browser, including keyboard focus, narrow screens and error states. Verify that the stylesheet loads and native interactions work with JavaScript disabled. If you intentionally enable HTMX, test both enhanced and ordinary requests.</p>
+<h2>Contributing to TendUI itself</h2>
+<ul>
+<li><a href="https://github.com/Tend-Stack/TendUI/blob/main/AGENTS.md">Library agent instructions</a>: components, semantic CSS, generated code, API compatibility and validation.</li>
+<li><a href="https://github.com/Tend-Stack/TendUI-web/blob/main/AGENTS.md">Website agent instructions</a>: guide routes, shared header, pinned dependencies and deployment verification.</li>
+<li><a href="https://github.com/Tend-Stack/TendUI/blob/main/docs/agents.md">Application guidance in the repository</a>: a Markdown version of this setup.</li>
+</ul>
+<p>Both repositories include a <code>CLAUDE.md</code> import of their own <code>AGENTS.md</code>. AI-assisted contributions follow <a href="https://github.com/Tend-Stack/TendUI/blob/main/CONTRIBUTING.md">MIT + DCO contribution rules</a>: a human reviews, tests and authorizes their own sign-off.</p>
+{{end}}

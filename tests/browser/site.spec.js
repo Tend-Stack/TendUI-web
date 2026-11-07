@@ -12,7 +12,7 @@ async function siteNavigation(page) {
 
 test('guides, examples, and homepage remain accessible and contained', async ({ page }, testInfo) => {
   test.setTimeout(180000);
-  for (const route of ['/', '/docs', '/docs/install', '/docs/html', '/docs/theming', '/docs/forms', '/docs/htmx', '/docs/accessibility', '/docs/deploy', '/examples']) {
+  for (const route of ['/', '/docs', '/docs/install', '/docs/html', '/docs/agents', '/docs/theming', '/docs/forms', '/docs/htmx', '/docs/accessibility', '/docs/deploy', '/examples']) {
     const response = await page.goto(route);
     expect(response.status()).toBe(200);
     await expect(page.locator('main')).toHaveCount(1);
