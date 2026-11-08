@@ -17,6 +17,10 @@ in `environment.txt` so runner updates can be distinguished from source changes.
 OS images and font packages can change: review environment changes rather than
 increasing tolerance to hide them.
 
+A desktop negative control hides the home-page heading and requires the screenshot
+matcher to reject the result with a pixel-difference error. It is skipped only
+while the initial baseline is missing; the normal page checks still fail then.
+
 Each test uses a fresh browser context and explicit theme cookie, locale, timezone,
 scale and reduced-motion preference. It waits for fonts and images, disables
 animations, hides the caret, and compares viewport screenshots. At most 100 pixels
