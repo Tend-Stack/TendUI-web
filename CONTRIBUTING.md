@@ -40,8 +40,7 @@ Identify significant generated material or reused sources in the PR description.
 ## Workflow
 
 Maintainers track both repositories in the shared [TendUI project](https://github.com/orgs/Tend-Stack/projects/2).
-The board is currently private while publication review is completed; use this
-repository's issues to propose work or report bugs.
+Use this repository's issues to propose website work or report website bugs.
 
 1. Fork the repository and create a focused branch from current `main`.
 2. Make the smallest complete change; keep unrelated cleanup separate.
@@ -68,6 +67,10 @@ npm test
 CI supplies native-platform and browser coverage. Do not claim a check ran when
 it did not; explain unavailable checks in the PR. Keep generated test evidence
 under ignored `tests/results/` and remove owned disposable artifacts after use.
+
+The separate [visual baseline suite](tests/browser/VISUAL.md) compares four key
+pages in both themes and viewport sizes. Baseline changes require visual review;
+do not automatically accept screenshots to clear a failing check.
 
 ## Design and compatibility
 

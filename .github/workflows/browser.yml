@@ -32,6 +32,21 @@ jobs:
       - name: Check desktop and mobile website
         working-directory: tests/browser
         run: npm test
+      - name: Record visual capture environment
+        if: ${{ !cancelled() }}
+        run: |
+          mkdir -p tests/results/visual
+          {
+            cat /etc/os-release
+            node --version
+            npm --version
+            fc-list --format='%{family}: %{style}\n' | sort -u
+            cat tests/browser/node_modules/playwright-core/browsers.json
+          } > tests/results/visual/environment.txt
+      - name: Compare website visual baselines twice
+        if: ${{ !cancelled() }}
+        working-directory: tests/browser
+        run: npm run test:visual -- --repeat-each=2
       - name: Retain bounded browser evidence
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
@@ -40,4 +55,11 @@ jobs:
           path: |
             tests/results/browser/results.json
             tests/results/browser/artifacts
+          retention-days: 7
+      - name: Retain bounded visual evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: website-visual-evidence
+          path: tests/results/visual
           retention-days: 7

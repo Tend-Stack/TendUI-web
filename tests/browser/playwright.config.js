@@ -1,6 +1,6 @@
 const { defineConfig } = require('@playwright/test');
 module.exports = defineConfig({
-  testDir: '.', testMatch: '*.spec.js',
+  testDir: '.', testMatch: 'site.spec.js',
   outputDir: '../results/browser/artifacts',
   reporter: [['line'], ['json', { outputFile: '../results/browser/results.json' }]],
   timeout: 60000, retries: 0, workers: 2,

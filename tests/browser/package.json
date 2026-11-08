@@ -4,7 +4,8 @@
   "version": "2026.1.0",
   "description": "Development-only browser verification; never shipped with TendUI.",
   "scripts": {
-    "test": "playwright test"
+    "test": "playwright test",
+    "test:visual": "playwright test --config=playwright.visual.config.js"
   },
   "devDependencies": {
     "@playwright/test": "1.65.0",
